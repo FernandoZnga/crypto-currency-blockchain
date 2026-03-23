@@ -1,0 +1,222 @@
+services:
+  frontend:
+    image: nginx:1.27-alpine
+    container_name: frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api-gateway
+    networks:
+      - edge
+
+  api-gateway:
+    image: python:3.12-slim
+    container_name: api-gateway
+    working_dir: /app
+    command: python app/main.py
+    volumes:
+      - ./api-gateway:/app
+    environment:
+      PORT: "8000"
+      AUTH_SERVICE_URL: http://auth-service:8001
+      WALLET_SERVICE_URL: http://wallet-service:8002
+      BLOCKCHAIN_NODE_URL: http://blockchain-node-1:8101
+      ALL_NODE_URLS: http://blockchain-node-1:8101,http://blockchain-node-2:8102,http://blockchain-node-3:8103
+      AUDIT_SERVICE_URL: http://audit-service:8010
+    ports:
+      - "8000:8000"
+    depends_on:
+      - auth-service
+      - wallet-service
+      - blockchain-node-1
+      - audit-service
+    networks:
+      - edge
+      - services
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    working_dir: /app
+    command: /bin/sh -c "python scripts/bootstrap_db.py && python app/main.py"
+    volumes:
+      - ./auth-service:/app
+    environment:
+      PORT: "8001"
+      DATABASE_URL: ${AUTH_DATABASE_URL}
+      KYC_ANCHOR_NODE_URL: http://blockchain-node-1:8101
+      AUDIT_SERVICE_URL: http://audit-service:8010
+    depends_on:
+      - postgres-auth
+      - audit-service
+    networks:
+      - services
+      - auth-data
+
+  wallet-service:
+    build:
+      context: ./wallet-service
+      dockerfile: Dockerfile
+    container_name: wallet-service
+    working_dir: /app
+    command: /bin/sh -c "python scripts/bootstrap_db.py && python app/main.py"
+    volumes:
+      - ./wallet-service:/app
+    environment:
+      PORT: "8002"
+      DATABASE_URL: ${WALLET_DATABASE_URL}
+      DEFAULT_NODE_URL: http://blockchain-node-1:8101
+      AUDIT_SERVICE_URL: http://audit-service:8010
+    depends_on:
+      - postgres-wallet
+      - blockchain-node-1
+      - audit-service
+    networks:
+      - services
+      - wallet-data
+
+  blockchain-node-1:
+    build:
+      context: ./blockchain-node
+      dockerfile: Dockerfile
+    container_name: blockchain-node-1
+    working_dir: /app
+    command: python app/main.py
+    volumes:
+      - ./blockchain-node:/app
+      - ./data/node1:/var/lib/blockchain
+    environment:
+      NODE_ID: node-1
+      PORT: "8101"
+      API_PORT: "8201"
+      DATA_DIR: /var/lib/blockchain
+      PEERS: http://blockchain-node-2:8102,http://blockchain-node-3:8103
+      ROLE: bootstrap
+      WALLET_SERVICE_URL: http://wallet-service:8002
+      AUDIT_SERVICE_URL: http://audit-service:8010
+    ports:
+      - "8101:8101"
+    networks:
+      - services
+
+  blockchain-node-2:
+    build:
+      context: ./blockchain-node
+      dockerfile: Dockerfile
+    container_name: blockchain-node-2
+    working_dir: /app
+    command: python app/main.py
+    volumes:
+      - ./blockchain-node:/app
+      - ./data/node2:/var/lib/blockchain
+    environment:
+      NODE_ID: node-2
+      PORT: "8102"
+      API_PORT: "8202"
+      DATA_DIR: /var/lib/blockchain
+      PEERS: http://blockchain-node-1:8101,http://blockchain-node-3:8103
+      ROLE: validator
+      WALLET_SERVICE_URL: http://wallet-service:8002
+      AUDIT_SERVICE_URL: http://audit-service:8010
+    ports:
+      - "8102:8102"
+    networks:
+      - services
+
+  blockchain-node-3:
+    build:
+      context: ./blockchain-node
+      dockerfile: Dockerfile
+    container_name: blockchain-node-3
+    working_dir: /app
+    command: python app/main.py
+    volumes:
+      - ./blockchain-node:/app
+      - ./data/node3:/var/lib/blockchain
+    environment:
+      NODE_ID: node-3
+      PORT: "8103"
+      API_PORT: "8203"
+      DATA_DIR: /var/lib/blockchain
+      PEERS: http://blockchain-node-1:8101,http://blockchain-node-2:8102
+      ROLE: validator
+      WALLET_SERVICE_URL: http://wallet-service:8002
+      AUDIT_SERVICE_URL: http://audit-service:8010
+    ports:
+      - "8103:8103"
+    networks:
+      - services
+
+  postgres-auth:
+    image: postgres:16-alpine
+    container_name: postgres-auth
+    environment:
+      POSTGRES_DB: ${AUTH_POSTGRES_DB}
+      POSTGRES_USER: ${AUTH_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${AUTH_POSTGRES_PASSWORD}
+    volumes:
+      - ./data/postgres-auth:/var/lib/postgresql/data
+    networks:
+      - auth-data
+
+  postgres-wallet:
+    image: postgres:16-alpine
+    container_name: postgres-wallet
+    environment:
+      POSTGRES_DB: ${WALLET_POSTGRES_DB}
+      POSTGRES_USER: ${WALLET_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${WALLET_POSTGRES_PASSWORD}
+    volumes:
+      - ./data/postgres-wallet:/var/lib/postgresql/data
+    networks:
+      - wallet-data
+
+  audit-service:
+    image: python:3.12-slim
+    container_name: audit-service
+    working_dir: /app
+    command: python app/main.py
+    volumes:
+      - ./audit-service:/app
+      - ./data/audit:/var/lib/audit
+    environment:
+      PORT: "8010"
+      DATA_DIR: /var/lib/audit
+    ports:
+      - "8010:8010"
+    networks:
+      - services
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - api-gateway
+      - auth-service
+      - wallet-service
+      - audit-service
+      - blockchain-node-1
+      - blockchain-node-2
+      - blockchain-node-3
+    networks:
+      - services
+
+networks:
+  edge:
+    driver: bridge
+  services:
+    driver: bridge
+  auth-data:
+    driver: bridge
+  wallet-data:
+    driver: bridge

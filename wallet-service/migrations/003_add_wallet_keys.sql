@@ -1,0 +1,5 @@
+ALTER TABLE wallets
+ADD COLUMN IF NOT EXISTS public_key_pem TEXT;
+
+ALTER TABLE wallets
+ADD COLUMN IF NOT EXISTS private_key_pem TEXT;

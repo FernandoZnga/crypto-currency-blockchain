@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AuditEvent",
+  "type": "object",
+  "required": [
+    "event_name",
+    "timestamp",
+    "actor_id",
+    "actor_type",
+    "entity_type",
+    "entity_id",
+    "source_ip",
+    "service_name",
+    "status"
+  ],
+  "properties": {
+    "event_name": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "actor_type": {
+      "type": "string",
+      "enum": ["user", "service", "admin", "system"]
+    },
+    "entity_type": {
+      "type": "string"
+    },
+    "entity_id": {
+      "type": "string"
+    },
+    "source_ip": {
+      "type": "string"
+    },
+    "device_id": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "protocol": {
+      "type": "string"
+    },
+    "service_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "failure", "pending"]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

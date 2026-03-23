@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Educational Crypto Network</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="background"></div>
+    <main class="app-shell">
+      <section id="landing-page" class="landing-page">
+        <section class="hero card">
+          <div class="hero-copy">
+            <p class="eyebrow">Educational Crypto Network</p>
+            <h1>User wallet, KYC, and blockchain learning made simple.</h1>
+            <p class="lede">
+              Create an account, complete KYC, and explore how an educational crypto
+              network works, all in one place.
+            </p>
+            <div class="hero-actions">
+              <button type="button" id="open-register">Create account</button>
+              <button type="button" class="secondary" id="open-signin">Sign in</button>
+            </div>
+            <a class="text-link" href="#how-it-works">Learn how it works</a>
+          </div>
+          <div class="hero-panel">
+            <div class="hero-panel-card">
+              <span class="panel-kicker">Educational flow</span>
+              <strong>Wallets and tokens</strong>
+              <p>Create a wallet and use educational balances in a simple blockchain environment.</p>
+            </div>
+            <div class="hero-panel-card">
+              <span class="panel-kicker">Compliance flow</span>
+              <strong>KYC and admin review</strong>
+              <p>Experience approvals, denials, and resubmissions in a guided workflow.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="feature-strip">
+          <article class="card feature-card">
+            <span class="feature-icon">W</span>
+            <h2>Wallets</h2>
+            <p>Create a wallet and manage educational token balances.</p>
+          </article>
+          <article class="card feature-card">
+            <span class="feature-icon">K</span>
+            <h2>KYC workflow</h2>
+            <p>Submit identity information and track approval status.</p>
+          </article>
+          <article class="card feature-card">
+            <span class="feature-icon">A</span>
+            <h2>Admin review</h2>
+            <p>Review pending requests and manage user access states.</p>
+          </article>
+          <article class="card feature-card">
+            <span class="feature-icon">B</span>
+            <h2>Blockchain activity</h2>
+            <p>See how educational transactions are recorded in a simple network.</p>
+          </article>
+        </section>
+
+        <section class="card how-section" id="how-it-works">
+          <div class="section-copy">
+            <p class="eyebrow">How It Works</p>
+            <h2>Three simple steps.</h2>
+          </div>
+          <div class="steps-grid">
+            <article class="step-card">
+              <span class="step-number">1</span>
+              <h3>Sign up</h3>
+              <p>Create your account and get an educational wallet.</p>
+            </article>
+            <article class="step-card">
+              <span class="step-number">2</span>
+              <h3>Complete KYC</h3>
+              <p>Submit your identity details and wait for review.</p>
+            </article>
+            <article class="step-card">
+              <span class="step-number">3</span>
+              <h3>Use the wallet</h3>
+              <p>Receive tokens immediately and send them after approval.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="education-notice card" id="education-notice">
+          <strong>This is an educational blockchain environment.</strong>
+          <span>No real funds are used, and every workflow exists for learning purposes only.</span>
+        </section>
+
+        <footer class="landing-footer">
+          <a href="#landing-page">About</a>
+          <a href="#how-it-works">Documentation</a>
+          <a href="#education-notice">Disclaimer</a>
+          <span class="muted">GitHub available in the project repository.</span>
+        </footer>
+      </section>
+
+      <section id="authenticated-shell" class="app-shell-auth hidden">
+        <header class="card app-header">
+          <div>
+            <p class="eyebrow" id="app-kicker">Educational Crypto Network</p>
+            <h1 class="dashboard-title" id="app-title">Dashboard</h1>
+            <p class="lede compact" id="app-subtitle">Signed-in workspace.</p>
+          </div>
+          <div class="app-header-actions">
+            <span class="pill" id="header-role">Role: user</span>
+            <button type="button" class="secondary" id="logout-button">Sign Out</button>
+          </div>
+        </header>
+
+        <nav class="card subnav" id="subnav"></nav>
+
+        <section id="user-dashboard" class="role-view hidden">
+          <div class="summary-grid user-summary-grid">
+            <article class="card summary-card primary">
+              <span class="metric-label">Wallet Balance</span>
+              <strong class="summary-value" id="user-balance">0 EDU</strong>
+              <p class="muted mono" id="user-wallet-short">wallet</p>
+              <span class="pill" id="user-wallet-status">Receive only</span>
+            </article>
+            <article class="card summary-card primary">
+              <span class="metric-label">KYC Status</span>
+              <strong class="summary-value" id="user-kyc-status">Not started</strong>
+              <p class="muted" id="user-kyc-caption">Complete KYC before sending funds.</p>
+              <button type="button" id="user-kyc-action">Submit KYC</button>
+            </article>
+            <article class="card summary-card secondary">
+              <span class="metric-label">Quick Stats</span>
+              <div class="mini-stats">
+                <div><span>Transactions</span><strong id="user-total-transactions">0</strong></div>
+                <div><span>Last activity</span><strong id="user-last-activity">None</strong></div>
+              </div>
+            </article>
+          </div>
+
+          <section class="tab-panel" id="user-tab-overview">
+            <div class="content-grid two-column">
+              <article class="card">
+                <div class="section-head">
+                  <h2>Wallet</h2>
+                  <span class="pill" id="transfer-capability">Receive only</span>
+                </div>
+                <p class="balance" id="wallet-balance">0 EDU</p>
+                <p class="muted" id="wallet-caption">Wallet details appear here.</p>
+                <div class="wallet-list" id="wallet-list"></div>
+              </article>
+              <article class="card">
+                <div class="section-head">
+                  <h2>Pending Actions</h2>
+                  <span class="pill warning" id="overview-alert-badge">Action needed</span>
+                </div>
+                <div class="history-list" id="overview-alerts"></div>
+              </article>
+            </div>
+            <article class="card">
+              <div class="section-head">
+                <h2>Recent Transactions</h2>
+                <span class="pill success" id="history-status">Ready</span>
+              </div>
+              <div class="history-list" id="transaction-history"></div>
+            </article>
+          </section>
+
+          <section class="tab-panel hidden" id="user-tab-kyc">
+            <div class="content-grid two-column">
+              <article class="card">
+                <div class="section-head">
+                  <h2>KYC Submission</h2>
+                  <span class="pill warning" id="kyc-status">Not started</span>
+                </div>
+                <p class="muted" id="kyc-caption">Complete KYC before sending or withdrawing.</p>
+                <form id="kyc-form" class="stack-form">
+                  <label>
+                    <span>Document Type</span>
+                    <select id="document-type">
+                      <option value="passport">Passport</option>
+                      <option value="driver_license">Driver License</option>
+                      <option value="government_id">Government ID</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Country</span>
+                    <input id="country-input" type="text" value="US">
+                  </label>
+                  <label>
+                    <span>KYC Note</span>
+                    <textarea id="kyc-note" rows="3" placeholder="Document set details"></textarea>
+                  </label>
+                  <button type="submit" id="kyc-submit-button">Submit KYC</button>
+                </form>
+              </article>
+              <article class="card">
+                <div class="section-head">
+                  <h2>Submission History</h2>
+                  <button type="button" class="secondary" id="refresh-button">Refresh</button>
+                </div>
+                <div class="history-list" id="kyc-history"></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tab-panel hidden" id="user-tab-transactions">
+            <article class="card">
+              <div class="section-head">
+                <h2>Send Funds</h2>
+                <span class="pill" id="send-status">Locked</span>
+              </div>
+              <p class="muted" id="send-caption">Sending unlocks after KYC approval.</p>
+              <form id="send-form" class="send-form">
+                <label>
+                  <span>From</span>
+                  <select id="sender-select"></select>
+                </label>
+                <label>
+                  <span>Recipient Wallet</span>
+                  <input id="recipient-wallet-input" type="text" placeholder="Enter wallet address">
+                </label>
+                <label>
+                  <span>Amount</span>
+                  <input id="amount-input" type="number" min="1" step="1" value="10">
+                </label>
+                <button type="submit" id="send-button">Send</button>
+              </form>
+            </article>
+            <article class="card">
+              <div class="section-head">
+                <h2>All Transactions</h2>
+                <div class="filter-strip">
+                  <button type="button" class="secondary filter is-active" data-user-history="all">All</button>
+                  <button type="button" class="secondary filter" data-user-history="outbound">Sent</button>
+                  <button type="button" class="secondary filter" data-user-history="inbound">Received</button>
+                </div>
+              </div>
+              <div class="history-list" id="transaction-history-full"></div>
+            </article>
+          </section>
+
+          <section class="tab-panel hidden" id="user-tab-network">
+            <article class="card network-card">
+              <div class="section-head">
+                <h2>Blockchain Network</h2>
+                <div class="inline-actions">
+                  <span class="pill success" id="chain-height">Height 0</span>
+                </div>
+              </div>
+              <p class="muted">Educational network activity only. This is secondary to your wallet workflow.</p>
+              <ul class="node-list" id="node-list"></ul>
+              <div class="activity-table" id="activity-table"></div>
+            </article>
+          </section>
+        </section>
+
+        <section id="admin-dashboard" class="role-view hidden">
+          <div class="summary-grid admin-summary-grid">
+            <article class="card summary-card primary">
+              <span class="metric-label">Pending KYC reviews</span>
+              <strong class="summary-value" id="admin-pending-count">0</strong>
+            </article>
+            <article class="card summary-card primary">
+              <span class="metric-label">Total users</span>
+              <strong class="summary-value" id="admin-total-users">0</strong>
+            </article>
+            <article class="card summary-card secondary">
+              <span class="metric-label">Verified users</span>
+              <strong class="summary-value" id="admin-verified-users">0</strong>
+            </article>
+            <article class="card summary-card secondary">
+              <span class="metric-label">Resubmission required</span>
+              <strong class="summary-value" id="admin-denied-users">0</strong>
+            </article>
+            <article class="card summary-card secondary">
+              <span class="metric-label">Network</span>
+              <strong class="summary-value" id="admin-network-summary">3 nodes</strong>
+            </article>
+          </div>
+
+          <section class="tab-panel" id="admin-tab-overview">
+            <div class="content-grid two-column">
+              <article class="card">
+                <div class="section-head">
+                  <h2>Operational Summary</h2>
+                  <span class="pill success">Admin only</span>
+                </div>
+                <div class="history-list" id="admin-overview-list"></div>
+              </article>
+              <article class="card">
+                <div class="section-head">
+                  <h2>Quick Actions</h2>
+                  <button type="button" class="secondary" id="admin-refresh">Refresh</button>
+                </div>
+                <div class="history-list">
+                  <div class="history-item"><strong>Review pending KYC requests</strong><span class="muted">Use the KYC Reviews tab to approve, deny, or request resubmission.</span></div>
+                  <div class="history-item"><strong>Search users</strong><span class="muted">Use the Users tab to filter by role, KYC status, or account status.</span></div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tab-panel hidden" id="admin-tab-kyc">
+            <article class="card">
+              <div class="section-head">
+                <h2>Pending KYC Reviews</h2>
+                <span class="pill success" id="admin-queue-count">0 pending</span>
+              </div>
+              <div class="review-list" id="review-list"></div>
+            </article>
+          </section>
+
+          <section class="tab-panel hidden" id="admin-tab-users">
+            <article class="card">
+              <div class="section-head">
+                <h2>Users</h2>
+                <div class="inline-actions">
+                  <div class="table-loading hidden" id="users-loading">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span>Loading users...</span>
+                  </div>
+                  <button type="button" class="secondary" id="users-refresh">Refresh</button>
+                </div>
+              </div>
+              <div class="toolbar-grid">
+                <input id="user-search" type="search" placeholder="Search name, email, wallet, or user id">
+                <select id="user-role-filter">
+                  <option value="">All roles</option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <select id="user-kyc-filter">
+                  <option value="">All KYC statuses</option>
+                  <option value="not_started">Not submitted</option>
+                  <option value="pending_review">Pending</option>
+                  <option value="verified">Verified</option>
+                  <option value="denied">Denied</option>
+                </select>
+                <select id="user-account-filter">
+                  <option value="">All account statuses</option>
+                  <option value="active">Active</option>
+                  <option value="suspended">Suspended</option>
+                  <option value="blocked">Blocked</option>
+                </select>
+              </div>
+              <div class="table-shell">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Wallet</th>
+                      <th>Role</th>
+                      <th>KYC</th>
+                      <th>Account</th>
+                      <th>Created</th>
+                      <th>Last activity</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-table-body"></tbody>
+                </table>
+              </div>
+              <div class="empty-state hidden" id="users-empty">No users match your search.</div>
+            </article>
+          </section>
+
+          <section class="tab-panel hidden" id="admin-tab-network">
+            <article class="card network-card">
+              <div class="section-head">
+                <h2>Blockchain Network</h2>
+                <div class="inline-actions">
+                  <div class="table-loading hidden" id="admin-network-loading">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span>Loading network...</span>
+                  </div>
+                  <button type="button" class="secondary" id="admin-network-refresh">Refresh</button>
+                  <span class="pill success" id="admin-chain-height">Height 0</span>
+                </div>
+              </div>
+              <ul class="node-list" id="admin-node-list"></ul>
+              <div class="activity-table" id="admin-activity-table"></div>
+            </article>
+          </section>
+
+          <section class="tab-panel hidden" id="admin-tab-activity">
+            <article class="card">
+              <div class="section-head">
+                <h2>Admin Activity</h2>
+                <div class="inline-actions">
+                  <label class="limit-control">
+                    <span>Show last</span>
+                    <select id="admin-activity-limit">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                      <option value="250">250</option>
+                      <option value="500">500</option>
+                      <option value="custom">Number</option>
+                    </select>
+                  </label>
+                  <input id="admin-activity-limit-custom" class="limit-input hidden" type="number" min="1" max="1000" placeholder="Custom">
+                  <span class="pill success">Recent events</span>
+                </div>
+              </div>
+              <div class="history-list" id="admin-activity-feed"></div>
+            </article>
+          </section>
+        </section>
+      </section>
+
+      <div class="auth-modal hidden" id="auth-modal" aria-hidden="true">
+        <div class="auth-backdrop" id="auth-backdrop"></div>
+        <div class="auth-dialog card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Account Access</p>
+              <h2 id="auth-modal-title">Sign in</h2>
+            </div>
+            <button type="button" class="secondary icon-button" id="close-auth-modal">Close</button>
+          </div>
+          <div class="auth-toggle">
+            <button type="button" class="secondary is-active" id="mode-signin">Sign In</button>
+            <button type="button" class="secondary" id="mode-register">Register</button>
+          </div>
+          <form id="login-form" class="stack-form">
+            <label id="name-field" class="hidden">
+              <span>Name</span>
+              <input id="name-input" type="text" placeholder="New user name">
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="email-input" type="email" placeholder="you@example.com">
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="password-input" type="password" placeholder="Enter your password">
+            </label>
+            <div class="inline-actions">
+              <button type="submit" id="auth-submit-button">Sign In</button>
+            </div>
+          </form>
+          <p class="tiny" id="auth-feedback"></p>
+        </div>
+      </div>
+
+      <div class="detail-drawer hidden" id="user-drawer">
+        <div class="drawer-backdrop" id="drawer-backdrop"></div>
+        <aside class="drawer-panel card">
+          <div class="section-head">
+            <h2>User Details</h2>
+            <button type="button" class="secondary icon-button" id="close-user-drawer">Close</button>
+          </div>
+          <div class="info-stack" id="drawer-user-summary"></div>
+          <div class="drawer-actions stack-form">
+            <label>
+              <span>Admin note</span>
+              <textarea id="drawer-note" rows="3" placeholder="Reason or admin note"></textarea>
+            </label>
+            <div class="action-section">
+              <div class="section-head">
+                <h3>KYC Actions</h3>
+              </div>
+              <div class="action-grid" id="drawer-kyc-actions"></div>
+            </div>
+            <div class="action-section">
+              <div class="section-head">
+                <h3>Account Actions</h3>
+              </div>
+              <div class="action-grid" id="drawer-account-actions"></div>
+            </div>
+          </div>
+          <div class="action-section">
+            <div class="section-head">
+              <h3>KYC History</h3>
+            </div>
+            <div class="history-list" id="drawer-kyc-history"></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="auth-modal hidden" id="confirm-modal" aria-hidden="true">
+        <div class="auth-backdrop" id="confirm-backdrop"></div>
+        <div class="auth-dialog card confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Confirm Action</p>
+              <h2 id="confirm-title">Are you sure?</h2>
+            </div>
+            <button type="button" class="secondary icon-button" id="confirm-close">Close</button>
+          </div>
+          <p class="muted" id="confirm-message">Please confirm this change.</p>
+          <div class="inline-actions confirm-actions">
+            <button type="button" class="secondary" id="confirm-cancel">No</button>
+            <button type="button" id="confirm-accept">Yes</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast hidden" id="toast"></div>
+    </main>
+
+    <script>
+      const gatewayBase = window.location.hostname === "localhost"
+        ? "http://localhost:8000"
+        : `${window.location.protocol}//${window.location.hostname}:8000`;
+
+      const state = {
+        token: window.sessionStorage.getItem("sessionToken") || "",
+        currentUser: null,
+        authMode: "signin",
+        ownerWallets: [],
+        contactWallets: [],
+        reviewDrafts: {},
+        userTab: window.sessionStorage.getItem("userActiveTab") || "overview",
+        adminTab: window.sessionStorage.getItem("adminActiveTab") || "overview",
+        userHistoryFilter: "all",
+        adminUsers: [],
+        adminQueue: [],
+        adminActivity: [],
+        selectedUser: null,
+        networkOverview: null,
+        pendingTransactions: [],
+        adminActivityLimit: Number(window.sessionStorage.getItem("adminActivityLimit") || 20),
+        usersLoading: false,
+        networkLoading: false,
+        actionPending: false,
+        toastTimer: null,
+        confirmResolver: null,
+      };
+
+      function authHeaders() {
+        return state.token ? { Authorization: `Bearer ${state.token}` } : {};
+      }
+
+      async function fetchJson(path, options = {}) {
+        const response = await fetch(`${gatewayBase}${path}`, options);
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+        if (!response.ok) {
+          const error = new Error(payload.detail || payload.error || "Request failed");
+          error.status = response.status;
+          error.payload = payload;
+          throw error;
+        }
+        return payload;
+      }
+
+      function setText(id, value) {
+        document.getElementById(id).textContent = value;
+      }
+
+      function setFeedback(message, tone = "") {
+        const el = document.getElementById("auth-feedback");
+        el.textContent = message || "";
+        el.className = `tiny ${tone}`.trim();
+      }
+
+      function formatDate(value) {
+        if (!value) return "None";
+        return new Date(value).toLocaleString();
+      }
+
+      function shorten(value, size = 6) {
+        if (!value) return "-";
+        return value.length <= size * 2 ? value : `${value.slice(0, size)}...${value.slice(-size)}`;
+      }
+
+      function badgeClass(status) {
+        if (status === "verified" || status === "approved" || status === "active") return "success";
+        if (status === "pending_review" || status === "pending" || status === "suspended") return "warning";
+        if (status === "denied" || status === "blocked") return "danger";
+        return "";
+      }
+
+      function badge(label, status) {
+        return `<span class="pill ${badgeClass(status)}">${label}</span>`;
+      }
+
+      function setBadge(id, label, status) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.className = `pill ${badgeClass(status)}`.trim();
+        el.textContent = label;
+      }
+
+      function clearAuthFields() {
+        ["name-input", "email-input", "password-input"].forEach((id) => {
+          document.getElementById(id).value = "";
+        });
+      }
+
+      function normalizeKycStatus(status) {
+        const value = (status || "").toLowerCase();
+        if (value === "approved" || value === "verified") return "approved";
+        if (value === "pending_review" || value === "pending") return "pending";
+        if (value === "denied") return "denied";
+        return "not_started";
+      }
+
+      function normalizeUserStatus(status) {
+        const value = (status || "").toLowerCase();
+        if (value === "blocked") return "blocked";
+        if (value === "suspended") return "suspended";
+        return "active";
+      }
+
+      function formatKycStatus(status) {
+        const normalized = normalizeKycStatus(status);
+        if (normalized === "approved") return "Approved";
+        if (normalized === "pending") return "Pending";
+        if (normalized === "denied") return "Denied";
+        return "Not started";
+      }
+
+      function formatUserStatus(status) {
+        const normalized = normalizeUserStatus(status);
+        if (normalized === "blocked") return "Blocked";
+        if (normalized === "suspended") return "Suspended";
+        return "Active";
+      }
+
+      function getAvailableKycActions(status) {
+        const normalized = normalizeKycStatus(status);
+        if (normalized === "approved" || normalized === "denied") return ["force_kyc_again"];
+        return [];
+      }
+
+      function getAvailableUserActions(status) {
+        const normalized = normalizeUserStatus(status);
+        if (normalized === "suspended") return ["set_active", "block"];
+        if (normalized === "blocked") return ["set_active"];
+        return ["suspend", "block"];
+      }
+
+      function showToast(message, tone = "success") {
+        const el = document.getElementById("toast");
+        if (state.toastTimer) window.clearTimeout(state.toastTimer);
+        el.textContent = message;
+        el.className = `toast ${tone}`.trim();
+        state.toastTimer = window.setTimeout(() => {
+          el.className = "toast hidden";
+        }, 2600);
+      }
+
+      function showConfirmModal(title, message) {
+        return new Promise((resolve) => {
+          state.confirmResolver = resolve;
+          document.getElementById("confirm-title").textContent = title;
+          document.getElementById("confirm-message").textContent = message;
+          document.getElementById("confirm-modal").classList.remove("hidden");
+        });
+      }
+
+      function resolveConfirmModal(accepted) {
+        document.getElementById("confirm-modal").classList.add("hidden");
+        const resolver = state.confirmResolver;
+        state.confirmResolver = null;
+        if (resolver) resolver(accepted);
+      }
+
+      function setActionPending(value) {
+        state.actionPending = value;
+        document.querySelectorAll("[data-admin-action], [data-review-action]").forEach((button) => {
+          button.disabled = value;
+        });
+        document.getElementById("confirm-accept").disabled = value;
+        document.getElementById("confirm-cancel").disabled = value;
+        document.getElementById("confirm-close").disabled = value;
+      }
+
+      function setUsersLoading(value) {
+        state.usersLoading = value;
+        document.getElementById("users-loading").classList.toggle("hidden", !value);
+        document.getElementById("users-refresh").disabled = value;
+      }
+
+      function setNetworkLoading(value) {
+        state.networkLoading = value;
+        const spinner = document.getElementById("admin-network-loading");
+        const refresh = document.getElementById("admin-network-refresh");
+        if (spinner) spinner.classList.toggle("hidden", !value);
+        if (refresh) refresh.disabled = value;
+      }
+
+      function authMessageFromError(error) {
+        if (!error) return "Something went wrong. Please try again.";
+        if (error.payload?.error === "invalid credentials") {
+          return "Email or password are not valid. Try again.";
+        }
+        if (error.payload?.error === "account_suspended") {
+          return "Your account is suspended. Please contact an administrator.";
+        }
+        if (error.payload?.error === "account_blocked") {
+          return "Your account is blocked. Please contact an administrator.";
+        }
+        if (error.payload?.error === "email already exists") {
+          return "An account with that email already exists. You can sign in or use forgot password to reset your password.";
+        }
+        return error.message || "Something went wrong. Please try again.";
+      }
+
+      function requireAdminNote(action) {
+        return ["deny_kyc", "block", "suspend", "force_kyc_again"].includes(action);
+      }
+
+      function actionMeta(action) {
+        const map = {
+          approve_kyc: { label: "Approve KYC", kind: "primary" },
+          deny_kyc: { label: "Deny KYC", kind: "danger" },
+          mark_pending: { label: "Mark Pending", kind: "secondary" },
+          force_kyc_again: { label: "Force KYC Again", kind: "secondary" },
+          set_active: { label: "Set Active", kind: "secondary" },
+          suspend: { label: "Suspend", kind: "warning" },
+          block: { label: "Block", kind: "danger" },
+        };
+        return map[action];
+      }
+
+      function confirmCopy(action, user) {
+        const next = {
+          approve_kyc: "approved",
+          deny_kyc: "denied",
+          mark_pending: "pending",
+          force_kyc_again: "not started",
+          set_active: "active",
+          suspend: "suspended",
+          block: "blocked",
+        }[action];
+        if (["approve_kyc", "deny_kyc", "mark_pending", "force_kyc_again"].includes(action)) {
+          return {
+            title: "Confirm KYC update",
+            message: `Are you sure you want to change KYC status from ${formatKycStatus(user.kyc_status).toLowerCase()} to ${next}?`,
+          };
+        }
+        return {
+          title: "Confirm account update",
+          message: `Are you sure you want to change user status from ${formatUserStatus(user.account_status).toLowerCase()} to ${next}?`,
+        };
+      }
+
+      function setAuthMode(mode) {
+        state.authMode = mode;
+        const registerMode = mode === "register";
+        document.getElementById("name-field").classList.toggle("hidden", !registerMode);
+        document.getElementById("auth-submit-button").textContent = registerMode ? "Create account" : "Sign in";
+        document.getElementById("auth-modal-title").textContent = registerMode ? "Create your account" : "Sign in";
+        document.getElementById("mode-signin").classList.toggle("is-active", !registerMode);
+        document.getElementById("mode-register").classList.toggle("is-active", registerMode);
+      }
+
+      function showAuthModal(mode) {
+        setAuthMode(mode);
+        document.getElementById("auth-modal").classList.remove("hidden");
+      }
+
+      function hideAuthModal() {
+        document.getElementById("auth-modal").classList.add("hidden");
+        clearAuthFields();
+        setFeedback("");
+      }
+
+      function setLayoutForRole() {
+        const user = state.currentUser;
+        const isLoggedIn = !!user;
+        document.getElementById("landing-page").classList.toggle("hidden", isLoggedIn);
+        document.getElementById("authenticated-shell").classList.toggle("hidden", !isLoggedIn);
+        document.getElementById("user-dashboard").classList.toggle("hidden", !isLoggedIn || user?.role !== "user");
+        document.getElementById("admin-dashboard").classList.toggle("hidden", !isLoggedIn || user?.role !== "admin");
+        if (!user) return;
+        setText("header-role", `Role: ${user.role}`);
+        if (user.role === "admin") {
+          setText("app-title", "Admin Console");
+          setText("app-subtitle", "Manage KYC reviews, users, and educational system activity.");
+          renderSubnav([
+            ["overview", "Overview"],
+            ["kyc", "KYC Reviews"],
+            ["users", "Users"],
+            ["network", "Network"],
+            ["activity", "Activity"],
+          ], state.adminTab, "admin");
+        } else {
+          setText("app-title", `Welcome back, ${user.name}`);
+          setText("app-subtitle", "Manage your wallet, KYC status, and recent activity.");
+          renderSubnav([
+            ["overview", "Overview"],
+            ["kyc", "KYC"],
+            ["transactions", "Transactions"],
+            ["network", "Network"],
+          ], state.userTab, "user");
+        }
+      }
+
+      function renderSubnav(items, active, role) {
+        document.getElementById("subnav").innerHTML = items.map(([id, label]) => `
+          <button type="button" class="secondary nav-pill ${active === id ? "is-active" : ""}" data-role-nav="${role}" data-tab="${id}">${label}</button>
+        `).join("");
+      }
+
+      function showUserTab(tab) {
+        state.userTab = tab;
+        window.sessionStorage.setItem("userActiveTab", tab);
+        ["overview", "kyc", "transactions", "network"].forEach((key) => {
+          document.getElementById(`user-tab-${key}`).classList.toggle("hidden", key !== tab);
+        });
+        renderSubnav([
+          ["overview", "Overview"],
+          ["kyc", "KYC"],
+          ["transactions", "Transactions"],
+          ["network", "Network"],
+        ], state.userTab, "user");
+      }
+
+      function showAdminTab(tab) {
+        state.adminTab = tab;
+        window.sessionStorage.setItem("adminActiveTab", tab);
+        ["overview", "kyc", "users", "network", "activity"].forEach((key) => {
+          document.getElementById(`admin-tab-${key}`).classList.toggle("hidden", key !== tab);
+        });
+        renderSubnav([
+          ["overview", "Overview"],
+          ["kyc", "KYC Reviews"],
+          ["users", "Users"],
+          ["network", "Network"],
+          ["activity", "Activity"],
+        ], state.adminTab, "admin");
+      }
+
+      async function loadCurrentUser() {
+        if (!state.token) {
+          state.currentUser = null;
+          setLayoutForRole();
+          return null;
+        }
+        try {
+          const data = await fetchJson("/me", { headers: authHeaders() });
+          state.currentUser = data.user;
+          setLayoutForRole();
+          return data.user;
+        } catch {
+          state.token = "";
+          window.sessionStorage.removeItem("sessionToken");
+          state.currentUser = null;
+          setLayoutForRole();
+          return null;
+        }
+      }
+
+      async function loadWallets() {
+        if (!state.currentUser || state.currentUser.role !== "user") return;
+        const data = await fetchJson(`/wallets/by-owner?owner_user_id=${encodeURIComponent(state.currentUser.user_id)}`);
+        state.ownerWallets = data.wallets || [];
+        state.contactWallets = data.contacts || [];
+      }
+
+      async function loadTransactionHistory() {
+        if (!state.currentUser || state.currentUser.role !== "user") return [];
+        const data = await fetchJson(`/transactions/history?address=${encodeURIComponent(state.currentUser.wallet_address)}`);
+        const confirmed = data.transactions || [];
+        const confirmedIds = new Set(confirmed.map((tx) => tx.tx_id));
+        state.pendingTransactions = state.pendingTransactions.filter((tx) => !confirmedIds.has(tx.tx_id));
+        return [...state.pendingTransactions, ...confirmed];
+      }
+
+      async function loadReviewQueue() {
+        if (!state.currentUser || state.currentUser.role !== "admin") return;
+        const data = await fetchJson("/kyc-submissions?mode=review_queue", { headers: authHeaders() });
+        state.adminQueue = data.submissions || [];
+      }
+
+      async function loadUsers() {
+        if (!state.currentUser || state.currentUser.role !== "admin") return;
+        const params = new URLSearchParams();
+        const search = document.getElementById("user-search")?.value?.trim();
+        const role = document.getElementById("user-role-filter")?.value;
+        const kyc = document.getElementById("user-kyc-filter")?.value;
+        const account = document.getElementById("user-account-filter")?.value;
+        if (search) params.set("search", search);
+        if (role) params.set("role", role);
+        if (kyc) params.set("kyc_status", kyc);
+        if (account) params.set("account_status", account);
+        const query = params.toString() ? `?${params}` : "";
+        setUsersLoading(true);
+        try {
+          const data = await fetchJson(`/users${query}`, { headers: authHeaders() });
+          state.adminUsers = data.users || [];
+          document.getElementById("admin-total-users").textContent = data.summary?.total_users || 0;
+          document.getElementById("admin-verified-users").textContent = data.summary?.verified_users || 0;
+          document.getElementById("admin-denied-users").textContent = data.summary?.resubmission_required || 0;
+        } finally {
+          setUsersLoading(false);
+        }
+      }
+
+      async function loadAdminActivity() {
+        if (!state.currentUser || state.currentUser.role !== "admin") return;
+        const data = await fetchJson(`/admin/activity?limit=${encodeURIComponent(state.adminActivityLimit)}`, { headers: authHeaders() });
+        state.adminActivity = data.events || [];
+      }
+
+      async function loadOverview() {
+        setNetworkLoading(state.currentUser?.role === "admin");
+        try {
+          const data = await fetchJson("/network/overview");
+          state.networkOverview = data;
+        } finally {
+          setNetworkLoading(false);
+        }
+      }
+
+      function renderUserDashboard(transactions) {
+        const user = state.currentUser;
+        const primaryWallet = state.ownerWallets[0];
+        const canTransfer = user && user.role === "user" && user.kyc_status === "verified";
+        setText("user-balance", `${Number(primaryWallet?.balance || 0).toLocaleString()} EDU`);
+        setText("user-wallet-short", shorten(primaryWallet?.address || user.wallet_address, 8));
+        setBadge("user-wallet-status", canTransfer ? "Ready to send" : "Receive only", canTransfer ? "verified" : user.kyc_status);
+        setText("user-kyc-status", user.kyc_status.replaceAll("_", " "));
+        setText("user-kyc-caption", user.kyc_submissions?.[0]?.review_note || "Complete KYC before sending funds.");
+        setText("wallet-balance", `${Number(primaryWallet?.balance || 0).toLocaleString()} EDU`);
+        setText("wallet-caption", `${shorten(user.wallet_address, 10)} • ${primaryWallet?.type || "wallet"} wallet`);
+        setBadge("transfer-capability", canTransfer ? "Send + receive" : "Receive only", canTransfer ? "verified" : user.kyc_status);
+        setBadge("send-status", canTransfer ? "Ready" : "Locked", canTransfer ? "verified" : user.kyc_status);
+        setBadge("kyc-status", user.kyc_status.replaceAll("_", " "), user.kyc_status);
+        setText("send-caption", canTransfer ? "KYC approved. Sending is enabled." : "KYC approval is required before sending.");
+        document.getElementById("send-button").disabled = !canTransfer;
+        const kycLocked = user.kyc_status === "verified";
+        document.getElementById("kyc-submit-button").disabled = kycLocked || user.kyc_status === "pending_review";
+        document.getElementById("document-type").disabled = kycLocked;
+        document.getElementById("country-input").readOnly = kycLocked;
+        document.getElementById("kyc-note").readOnly = kycLocked;
+        document.getElementById("user-kyc-action").textContent = user.kyc_status === "denied" ? "Resubmit KYC" : user.kyc_status === "verified" ? "KYC Approved" : "Submit KYC";
+        document.getElementById("user-kyc-action").disabled = user.kyc_status === "verified";
+        document.getElementById("wallet-list").innerHTML = state.ownerWallets.length
+          ? state.ownerWallets.map((wallet) => `<div class="wallet-row"><span>${shorten(wallet.address, 10)}</span><strong>${Number(wallet.balance || 0).toLocaleString()} EDU</strong></div>`).join("")
+          : `<div class="history-item"><strong>No wallet found.</strong><span class="muted">Your wallet will appear here.</span></div>`;
+        document.getElementById("overview-alerts").innerHTML = buildUserAlerts(user);
+        renderKycHistory(user);
+        renderTransactionHistory("transaction-history", transactions.slice(0, 5));
+        renderTransactionHistory("transaction-history-full", filterTransactions(transactions));
+        syncTransactionFilterButtons();
+        document.getElementById("user-total-transactions").textContent = transactions.length;
+        document.getElementById("user-last-activity").textContent = transactions[0] ? formatDate(transactions[0].timestamp) : "None";
+        populateSendSelectors();
+        renderNetwork("node-list", "activity-table", "chain-height");
+        showUserTab(state.userTab);
+      }
+
+      function buildUserAlerts(user) {
+        const latest = user.kyc_submissions?.[0];
+        const items = [];
+        if (!latest) {
+          items.push(["Submit KYC", "You can receive now, but sending stays locked until KYC is approved."]);
+        } else if (latest.status === "pending_review") {
+          items.push(["KYC pending", "Your submission is waiting for admin review."]);
+        } else if (latest.status === "denied") {
+          items.push(["Resubmission required", latest.review_note || "Your KYC was denied. Update and resubmit."]);
+        } else {
+          items.push(["Wallet ready", "Your account is verified and ready to send educational tokens."]);
+        }
+        if (!items.length) {
+          items.push(["No pending actions", "Your account is up to date."]);
+        }
+        setBadge("overview-alert-badge", items[0][0], latest?.status || user.kyc_status);
+        return items.map(([title, detail]) => `<div class="history-item"><strong>${title}</strong><span class="muted">${detail}</span></div>`).join("");
+      }
+
+      function renderKycHistory(user) {
+        const items = user?.kyc_submissions || [];
+        document.getElementById("kyc-history").innerHTML = items.length
+          ? items.map((submission) => `
+              <div class="history-item">
+                <strong>${submission.document_type.replaceAll("_", " ")} • ${submission.status}</strong>
+                <span>${formatDate(submission.submitted_at)}</span>
+                <span class="muted">${submission.review_note || submission.note || "No note provided."}</span>
+              </div>
+            `).join("")
+          : `<div class="history-item"><strong>No KYC submissions found.</strong><span class="muted">Submit KYC to start the review process.</span></div>`;
+      }
+
+      function filterTransactions(transactions) {
+        if (state.userHistoryFilter === "all") return transactions;
+        return transactions.filter((tx) => tx.direction === state.userHistoryFilter);
+      }
+
+      function renderTransactionHistory(targetId, items) {
+        document.getElementById(targetId).innerHTML = items.length
+          ? items.map((item) => `
+              <div class="history-item">
+                <strong>${item.direction === "outbound" ? "Sent" : "Received"} ${item.amount} EDU</strong>
+                <span>${formatDate(item.timestamp)}</span>
+                <span class="muted">${shorten(item.sender, 8)} → ${shorten(item.recipient, 8)}</span>
+              </div>
+            `).join("")
+          : `<div class="history-item"><strong>No transactions yet.</strong><span class="muted">Your activity will appear here after receiving or sending tokens.</span></div>`;
+      }
+
+      function syncTransactionFilterButtons() {
+        document.querySelectorAll("[data-user-history]").forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.userHistory === state.userHistoryFilter);
+        });
+      }
+
+      function populateSendSelectors() {
+        const sender = document.getElementById("sender-select");
+        sender.innerHTML = "";
+        state.ownerWallets.forEach((wallet, index) => {
+          sender.insertAdjacentHTML("beforeend", `<option value="${wallet.address}" ${index === 0 ? "selected" : ""}>${shorten(wallet.address, 10)} (${wallet.balance} EDU)</option>`);
+        });
+      }
+
+      function renderAdminDashboard() {
+        setText("admin-pending-count", state.adminQueue.length);
+        setText("admin-network-summary", `${state.networkOverview?.node_count || 0} nodes`);
+        setBadge("admin-queue-count", `${state.adminQueue.length} pending`, state.adminQueue.length ? "pending_review" : "verified");
+        document.getElementById("admin-overview-list").innerHTML = `
+          <div class="history-item"><strong>Pending KYC reviews</strong><span class="muted">${state.adminQueue.length} requests need action.</span></div>
+          <div class="history-item"><strong>Total users</strong><span class="muted">${state.adminUsers.length} users currently match the selected filters.</span></div>
+          <div class="history-item"><strong>Verified users</strong><span class="muted">${document.getElementById("admin-verified-users").textContent} users can send funds.</span></div>
+        `;
+        renderAdminQueue();
+        renderUsersTable();
+        renderNetwork("admin-node-list", "admin-activity-table", "admin-chain-height");
+        renderAdminActivity();
+        showAdminTab(state.adminTab);
+      }
+
+      function renderAdminQueue() {
+        const list = document.getElementById("review-list");
+        if (!state.adminQueue.length) {
+          list.innerHTML = `<div class="history-item"><strong>No pending reviews.</strong><span class="muted">All KYC requests are up to date.</span></div>`;
+          return;
+        }
+        list.innerHTML = state.adminQueue.map((item) => `
+          <form class="review-card" data-submission-id="${item.submission_id}">
+            <div class="review-head">
+              <strong>${item.name}</strong>
+              ${badge(item.status.replaceAll("_", " "), item.status)}
+            </div>
+            <span>${item.email} • ${shorten(item.wallet_address || item.user_id, 10)}</span>
+            <span class="muted">${item.document_type.replaceAll("_", " ")} • submitted ${formatDate(item.submitted_at)}</span>
+            <textarea rows="3" placeholder="Reason if denying or requesting resubmission">${state.reviewDrafts[item.submission_id] || ""}</textarea>
+            <div class="inline-actions">
+              <button type="button" data-review-action="approve">Approve</button>
+              <button type="button" class="secondary" data-review-action="deny">Deny</button>
+              <button type="button" class="secondary" data-review-action="reset">Request resubmission</button>
+              <button type="button" class="secondary" data-open-user="${item.user_id}">View user</button>
+            </div>
+          </form>
+        `).join("");
+      }
+
+      function renderUsersTable() {
+        const body = document.getElementById("users-table-body");
+        const empty = document.getElementById("users-empty");
+        if (!state.adminUsers.length) {
+          body.innerHTML = "";
+          empty.classList.remove("hidden");
+          return;
+        }
+        empty.classList.add("hidden");
+        body.innerHTML = state.adminUsers.map((user) => `
+          <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td class="mono">${shorten(user.wallet_address, 10)}</td>
+            <td>${badge(user.role, user.role)}</td>
+            <td>${badge(user.kyc_status.replaceAll("_", " "), user.kyc_status)}</td>
+            <td>${badge(user.account_status, user.account_status)}</td>
+            <td>${formatDate(user.created_at)}</td>
+            <td>${formatDate(user.last_activity)}</td>
+            <td><button type="button" class="secondary small-button" data-open-user="${user.user_id}">View</button></td>
+          </tr>
+        `).join("");
+      }
+
+      function renderAdminActivity() {
+        document.getElementById("admin-activity-feed").innerHTML = state.adminActivity.length
+          ? state.adminActivity.map((event) => `<div class="history-item"><strong>${event.message}</strong><span class="muted">${formatDate(event.timestamp)}</span></div>`).join("")
+          : `<div class="history-item"><strong>No recent activity.</strong><span class="muted">Admin events will appear here.</span></div>`;
+      }
+
+      function updateAdminActivityLimit() {
+        const selectValue = document.getElementById("admin-activity-limit").value;
+        const customValue = Number(document.getElementById("admin-activity-limit-custom").value || 0);
+        state.adminActivityLimit = selectValue === "custom"
+          ? Math.max(1, Math.min(customValue || 20, 1000))
+          : Number(selectValue);
+        window.sessionStorage.setItem("adminActivityLimit", String(state.adminActivityLimit));
+        const isPreset = ["10", "20", "50", "100", "250", "500"].includes(String(state.adminActivityLimit));
+        document.getElementById("admin-activity-limit").value = isPreset ? String(state.adminActivityLimit) : "custom";
+        document.getElementById("admin-activity-limit-custom").classList.toggle("hidden", isPreset);
+        document.getElementById("admin-activity-limit-custom").value = isPreset ? "" : String(state.adminActivityLimit);
+        refreshAuthenticatedViews();
+      }
+
+      function syncAdminActivityLimitControl() {
+        const isPreset = ["10", "20", "50", "100", "250", "500"].includes(String(state.adminActivityLimit));
+        document.getElementById("admin-activity-limit").value = isPreset ? String(state.adminActivityLimit) : "custom";
+        document.getElementById("admin-activity-limit-custom").classList.toggle("hidden", isPreset);
+        document.getElementById("admin-activity-limit-custom").value = isPreset ? "" : String(state.adminActivityLimit);
+      }
+
+      function renderNetwork(nodeTargetId, activityTargetId, chainTargetId) {
+        const overview = state.networkOverview;
+        if (!overview) return;
+        setText(chainTargetId, `Height ${overview.latest_chain_height}`);
+        document.getElementById(nodeTargetId).innerHTML = overview.nodes.map((node) => `
+          <li><span>${node.node_id}</span><strong>${node.role || node.status}</strong></li>
+        `).join("");
+        document.getElementById(activityTargetId).innerHTML = (overview.recent_activity || []).slice(0, 8).map((item) => `
+          <div class="activity-row">
+            <span>${item.node_id}: ${item.message}</span>
+            <strong>${item.timestamp}</strong>
+          </div>
+        `).join("") || `<div class="history-item"><strong>No network activity yet.</strong><span class="muted">Recent blockchain events will appear here.</span></div>`;
+      }
+
+      async function openUserDrawer(userId) {
+        const data = await fetchJson(`/users/${userId}`, { headers: authHeaders() });
+        state.selectedUser = data.user;
+        document.getElementById("drawer-user-summary").innerHTML = `
+          <div><span class="label">Name</span><strong>${data.user.name}</strong></div>
+          <div><span class="label">Email</span><strong>${data.user.email}</strong></div>
+          <div><span class="label">Wallet</span><strong class="mono">${shorten(data.user.wallet_address, 12)}</strong></div>
+          <div><span class="label">KYC</span><strong>${badge(formatKycStatus(data.user.kyc_status), normalizeKycStatus(data.user.kyc_status))}</strong></div>
+          <div><span class="label">Account</span><strong>${badge(formatUserStatus(data.user.account_status), normalizeUserStatus(data.user.account_status))}</strong></div>
+        `;
+        renderDrawerActions(data.user);
+        document.getElementById("drawer-kyc-history").innerHTML = data.user.kyc_submissions.length
+          ? data.user.kyc_submissions.map((submission) => `<div class="history-item"><strong>${submission.status}</strong><span class="muted">${formatDate(submission.submitted_at)} • ${submission.review_note || submission.note || "No note"}</span></div>`).join("")
+          : `<div class="history-item"><strong>No KYC submissions found.</strong><span class="muted">This user has not submitted KYC yet.</span></div>`;
+        document.getElementById("user-drawer").classList.remove("hidden");
+      }
+
+      function renderDrawerActions(user) {
+        const kycActions = getAvailableKycActions(user.kyc_status);
+        const userActions = getAvailableUserActions(user.account_status);
+        const kycSection = document.getElementById("drawer-kyc-actions").closest(".action-section");
+        kycSection.classList.toggle("hidden", !kycActions.length);
+        document.getElementById("drawer-kyc-actions").innerHTML = kycActions.map((action) => {
+          const meta = actionMeta(action);
+          return `<button type="button" class="${meta.kind === "primary" ? "" : meta.kind}" data-admin-action="${action}" ${state.actionPending ? "disabled" : ""}>${meta.label}</button>`;
+        }).join("");
+        document.getElementById("drawer-account-actions").innerHTML = userActions.map((action) => {
+          const meta = actionMeta(action);
+          return `<button type="button" class="${meta.kind === "primary" ? "" : meta.kind}" data-admin-action="${action}" ${state.actionPending ? "disabled" : ""}>${meta.label}</button>`;
+        }).join("");
+      }
+
+      function closeUserDrawer() {
+        state.selectedUser = null;
+        document.getElementById("drawer-note").value = "";
+        document.getElementById("user-drawer").classList.add("hidden");
+      }
+
+      async function runAdminAction(action, sourceUser = state.selectedUser) {
+        if (!sourceUser) return;
+        const note = document.getElementById("drawer-note").value.trim();
+        if (requireAdminNote(action) && !note) {
+          showToast("Add an admin note before using this action.", "error");
+          return;
+        }
+        const copy = confirmCopy(action, sourceUser);
+        const confirmed = await showConfirmModal(copy.title, copy.message);
+        if (!confirmed) return;
+        try {
+          setActionPending(true);
+          if (action === "approve_kyc") {
+            await fetchJson(`/users/${sourceUser.user_id}/kyc-status`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ status: "verified", note }),
+            });
+          } else if (action === "deny_kyc") {
+            await fetchJson(`/users/${sourceUser.user_id}/kyc-status`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ status: "denied", note }),
+            });
+          } else if (action === "mark_pending") {
+            await fetchJson(`/users/${sourceUser.user_id}/kyc-status`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ status: "pending_review", note }),
+            });
+          } else if (action === "force_kyc_again") {
+            await fetchJson(`/users/${sourceUser.user_id}/reset-kyc`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ note }),
+            });
+          } else if (action === "set_active") {
+            await fetchJson(`/users/${sourceUser.user_id}/account-status`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ status: "active" }),
+            });
+          } else if (action === "suspend") {
+            await fetchJson(`/users/${sourceUser.user_id}/account-status`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ status: "suspended" }),
+            });
+          } else if (action === "block") {
+            await fetchJson(`/users/${sourceUser.user_id}/account-status`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ status: "blocked" }),
+            });
+          }
+          await refreshAuthenticatedViews();
+          if (state.selectedUser?.user_id === sourceUser.user_id) {
+            await openUserDrawer(sourceUser.user_id);
+          }
+          showToast("Action completed successfully.");
+        } catch (error) {
+          showToast(error.message || "Action failed.", "error");
+        } finally {
+          setActionPending(false);
+        }
+      }
+
+      async function signIn(event) {
+        event.preventDefault();
+        if (state.authMode === "register") {
+          await registerUser();
+          return;
+        }
+        try {
+          const data = await fetchJson("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: document.getElementById("email-input").value.trim(),
+              password: document.getElementById("password-input").value,
+            }),
+          });
+          state.token = data.token;
+          window.sessionStorage.setItem("sessionToken", state.token);
+          state.currentUser = data.user;
+          hideAuthModal();
+          await refreshAuthenticatedViews();
+        } catch (error) {
+          setFeedback(authMessageFromError(error), "error");
+        }
+      }
+
+      async function registerUser() {
+        try {
+          await fetchJson("/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: document.getElementById("name-input").value.trim(),
+              email: document.getElementById("email-input").value.trim(),
+              password: document.getElementById("password-input").value,
+            }),
+          });
+          setAuthMode("signin");
+          setFeedback("Account created. Sign in with your new credentials.", "success");
+        } catch (error) {
+          setFeedback(authMessageFromError(error), "error");
+        }
+      }
+
+      async function submitKyc(event) {
+        event.preventDefault();
+        try {
+          await fetchJson("/kyc-submissions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...authHeaders() },
+            body: JSON.stringify({
+              document_type: document.getElementById("document-type").value,
+              country: document.getElementById("country-input").value.trim(),
+              note: document.getElementById("kyc-note").value.trim(),
+            }),
+          });
+          await refreshAuthenticatedViews();
+        } catch (error) {}
+      }
+
+      async function submitTransaction(event) {
+        event.preventDefault();
+        const sender = document.getElementById("sender-select").value;
+        const recipient = document.getElementById("recipient-wallet-input").value.trim();
+        const amount = Number(document.getElementById("amount-input").value);
+        if (!recipient) {
+          showToast("Enter a recipient wallet address.", "error");
+          return;
+        }
+        if (!amount || amount <= 0) {
+          showToast("Enter a valid amount.", "error");
+          return;
+        }
+        const confirmed = await showConfirmModal(
+          "Confirm transfer",
+          `Are you sure you want to send ${amount} EDU from ${shorten(sender, 8)} to ${shorten(recipient, 8)}?`
+        );
+        if (!confirmed) return;
+        try {
+          document.getElementById("send-button").disabled = true;
+          const result = await fetchJson("/transactions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...authHeaders() },
+            body: JSON.stringify({
+              owner_user_id: state.currentUser.user_id,
+              sender,
+              recipient,
+              amount,
+            }),
+          });
+          state.pendingTransactions = [
+            {
+              tx_id: result.tx_id || result.transaction?.tx_id || `pending-${Date.now()}`,
+              timestamp: new Date().toISOString(),
+              sender,
+              recipient,
+              amount,
+              direction: "outbound",
+              status: "pending",
+            },
+            ...state.pendingTransactions,
+          ];
+          document.getElementById("recipient-wallet-input").value = "";
+          await refreshAuthenticatedViews();
+          showToast("Transfer completed successfully.");
+        } catch (error) {
+          showToast("Transfer failed. Check the recipient wallet and try again.", "error");
+        } finally {
+          document.getElementById("send-button").disabled = false;
+        }
+      }
+
+      async function handleAdminReview(submissionId, action, note) {
+        const target = state.adminQueue.find((item) => item.submission_id === submissionId);
+        if (!target) return;
+        const mappedAction = { approve: "approve_kyc", deny: "deny_kyc", reset: "force_kyc_again" }[action];
+        if (requireAdminNote(mappedAction) && !note) {
+          showToast("Add a note before using this action.", "error");
+          return;
+        }
+        const copy = confirmCopy(mappedAction, {
+          kyc_status: target.status,
+          account_status: "active",
+          user_id: target.user_id,
+        });
+        const confirmed = await showConfirmModal(copy.title, copy.message);
+        if (!confirmed) return;
+        try {
+          setActionPending(true);
+          if (action === "reset") {
+            await fetchJson(`/users/${target.user_id}/reset-kyc`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ note }),
+            });
+          } else {
+            await fetchJson(`/kyc-submissions/${submissionId}/review`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", ...authHeaders() },
+              body: JSON.stringify({ action, review_note: note }),
+            });
+          }
+          delete state.reviewDrafts[submissionId];
+          await refreshAuthenticatedViews();
+          showToast("Review updated successfully.");
+        } catch (error) {
+          showToast(error.message || "Review update failed.", "error");
+        } finally {
+          setActionPending(false);
+        }
+      }
+
+      function signOut() {
+        state.token = "";
+        state.currentUser = null;
+        state.ownerWallets = [];
+        state.contactWallets = [];
+        state.adminUsers = [];
+        state.adminQueue = [];
+        state.adminActivity = [];
+        state.selectedUser = null;
+        window.sessionStorage.removeItem("sessionToken");
+        window.sessionStorage.removeItem("userActiveTab");
+        window.sessionStorage.removeItem("adminActiveTab");
+        window.sessionStorage.removeItem("adminActivityLimit");
+        closeUserDrawer();
+        setLayoutForRole();
+      }
+
+      async function refreshAuthenticatedViews() {
+        const user = await loadCurrentUser();
+        if (!user) return;
+        await loadOverview();
+        if (user.role === "admin") {
+          await Promise.all([loadUsers(), loadReviewQueue(), loadAdminActivity()]);
+          renderAdminDashboard();
+        } else {
+          await loadWallets();
+          const transactions = await loadTransactionHistory();
+          renderUserDashboard(transactions);
+        }
+      }
+
+      document.getElementById("open-register").addEventListener("click", () => showAuthModal("register"));
+      document.getElementById("open-signin").addEventListener("click", () => showAuthModal("signin"));
+      document.getElementById("close-auth-modal").addEventListener("click", hideAuthModal);
+      document.getElementById("auth-backdrop").addEventListener("click", hideAuthModal);
+      document.getElementById("mode-signin").addEventListener("click", () => setAuthMode("signin"));
+      document.getElementById("mode-register").addEventListener("click", () => setAuthMode("register"));
+      document.getElementById("login-form").addEventListener("submit", signIn);
+      document.getElementById("logout-button").addEventListener("click", signOut);
+      document.getElementById("kyc-form").addEventListener("submit", submitKyc);
+      document.getElementById("send-form").addEventListener("submit", submitTransaction);
+      document.getElementById("refresh-button").addEventListener("click", refreshAuthenticatedViews);
+      document.getElementById("admin-refresh").addEventListener("click", refreshAuthenticatedViews);
+      document.getElementById("users-refresh").addEventListener("click", refreshAuthenticatedViews);
+      document.getElementById("user-kyc-action").addEventListener("click", () => showUserTab("kyc"));
+      document.getElementById("subnav").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-tab]");
+        if (!button) return;
+        if (button.dataset.roleNav === "admin") showAdminTab(button.dataset.tab);
+        else showUserTab(button.dataset.tab);
+      });
+      document.getElementById("review-list").addEventListener("input", (event) => {
+        if (!event.target.matches("textarea")) return;
+        const card = event.target.closest(".review-card");
+        state.reviewDrafts[card.dataset.submissionId] = event.target.value;
+      });
+      document.getElementById("review-list").addEventListener("click", async (event) => {
+        const action = event.target.dataset.reviewAction;
+        const userId = event.target.dataset.openUser;
+        if (userId) {
+          await openUserDrawer(userId);
+          return;
+        }
+        if (!action) return;
+        const card = event.target.closest(".review-card");
+        await handleAdminReview(card.dataset.submissionId, action, card.querySelector("textarea").value.trim());
+      });
+      document.getElementById("users-table-body").addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-open-user]");
+        if (!button) return;
+        await openUserDrawer(button.dataset.openUser);
+      });
+      document.getElementById("user-search").addEventListener("input", refreshAuthenticatedViews);
+      document.getElementById("user-role-filter").addEventListener("change", refreshAuthenticatedViews);
+      document.getElementById("user-kyc-filter").addEventListener("change", refreshAuthenticatedViews);
+      document.getElementById("user-account-filter").addEventListener("change", refreshAuthenticatedViews);
+      document.getElementById("transaction-history-full").parentElement.querySelector(".filter-strip").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-user-history]");
+        if (!button) return;
+        state.userHistoryFilter = button.dataset.userHistory;
+        syncTransactionFilterButtons();
+        refreshAuthenticatedViews();
+      });
+      document.getElementById("close-user-drawer").addEventListener("click", closeUserDrawer);
+      document.getElementById("drawer-backdrop").addEventListener("click", closeUserDrawer);
+      document.getElementById("user-drawer").addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-admin-action]");
+        if (!button) return;
+        await runAdminAction(button.dataset.adminAction);
+      });
+      document.getElementById("confirm-close").addEventListener("click", () => resolveConfirmModal(false));
+      document.getElementById("confirm-cancel").addEventListener("click", () => resolveConfirmModal(false));
+      document.getElementById("confirm-backdrop").addEventListener("click", () => resolveConfirmModal(false));
+      document.getElementById("confirm-accept").addEventListener("click", () => resolveConfirmModal(true));
+      document.getElementById("admin-network-refresh").addEventListener("click", refreshAuthenticatedViews);
+      document.getElementById("admin-activity-limit").addEventListener("change", updateAdminActivityLimit);
+      document.getElementById("admin-activity-limit-custom").addEventListener("change", updateAdminActivityLimit);
+
+      setAuthMode("signin");
+      syncAdminActivityLimitControl();
+      setLayoutForRole();
+      loadCurrentUser().then((user) => {
+        if (user) refreshAuthenticatedViews();
+      });
+    </script>
+  </body>
+</html>
