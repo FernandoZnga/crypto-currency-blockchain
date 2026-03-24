@@ -41,6 +41,17 @@ body {
   padding: 26px 0 48px;
 }
 
+.language-toggle {
+  position: sticky;
+  top: 14px;
+  z-index: 20;
+  display: inline-flex;
+  gap: 8px;
+  padding: 10px;
+  margin-left: auto;
+  margin-bottom: 16px;
+}
+
 .landing-page, .app-shell-auth {
   display: grid;
   gap: 24px;
@@ -101,6 +112,7 @@ body {
 .hero-panel { grid-template-columns: 1fr; }
 .feature-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .steps-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.info-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .user-summary-grid { grid-template-columns: 1.2fr 1.1fr 0.9fr; }
 .admin-summary-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .two-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -205,6 +217,23 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 }
 
 .how-section { display: grid; gap: 18px; }
+
+.info-card,
+.info-list,
+.info-list > div {
+  display: grid;
+  gap: 10px;
+}
+
+.info-list > div {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.info-list > div:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
 
 .education-notice, .app-header-actions {
   display: flex;
@@ -528,7 +557,7 @@ textarea { resize: vertical; }
 .hidden { display: none !important; }
 
 @media (max-width: 980px) {
-  .hero, .app-header, .feature-strip, .steps-grid, .user-summary-grid, .admin-summary-grid, .two-column, .toolbar-grid, .send-form {
+  .hero, .app-header, .feature-strip, .steps-grid, .info-grid, .user-summary-grid, .admin-summary-grid, .two-column, .toolbar-grid, .send-form {
     grid-template-columns: 1fr;
   }
 

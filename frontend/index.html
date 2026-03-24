@@ -9,6 +9,10 @@
   <body>
     <div class="background"></div>
     <main class="app-shell">
+      <div class="language-toggle card" id="language-toggle">
+        <button type="button" class="secondary is-active" data-language="en">EN</button>
+        <button type="button" class="secondary" data-language="es">ES</button>
+      </div>
       <section id="landing-page" class="landing-page">
         <section class="hero card">
           <div class="hero-copy">
@@ -90,10 +94,37 @@
           <span>No real funds are used, and every workflow exists for learning purposes only.</span>
         </section>
 
+        <section class="info-grid">
+          <article class="card info-card" id="documentation-section">
+            <div class="section-copy">
+              <p class="eyebrow">Documentation</p>
+              <h2>What this demo includes.</h2>
+            </div>
+            <div class="info-list" id="documentation-list">
+              <div><strong>Accounts and sessions</strong><span>Users can register, sign in, and access role-based screens for learning flows.</span></div>
+              <div><strong>KYC workflow</strong><span>Identity submissions move through pending, approved, denied, and resubmission states.</span></div>
+              <div><strong>Wallets and transfers</strong><span>Balances are derived from chain activity, and verified users can send educational tokens.</span></div>
+              <div><strong>Funding and network view</strong><span>Demo purchases credit wallets on-chain, and the UI shows blockchain activity across nodes.</span></div>
+            </div>
+          </article>
+          <article class="card info-card" id="disclaimer-section">
+            <div class="section-copy">
+              <p class="eyebrow">Disclaimer</p>
+              <h2>Educational use only.</h2>
+            </div>
+            <div class="info-list" id="disclaimer-list">
+              <div><strong>No real money</strong><span>Credit card and bank account forms are simulated and are not validated against any payment provider.</span></div>
+              <div><strong>No financial product</strong><span>EDU balances, purchases, and transfers are fictional and exist only for demonstration.</span></div>
+              <div><strong>No compliance claim</strong><span>KYC, audit, and admin tools are simplified examples and not production compliance controls.</span></div>
+              <div><strong>No custody or recovery guarantee</strong><span>Because this is a demo ledger, mistakes may require manual compensation or environment reset.</span></div>
+            </div>
+          </article>
+        </section>
+
         <footer class="landing-footer">
           <a href="#landing-page">About</a>
-          <a href="#how-it-works">Documentation</a>
-          <a href="#education-notice">Disclaimer</a>
+          <a href="#documentation-section">Documentation</a>
+          <a href="#disclaimer-section">Disclaimer</a>
           <span class="muted">GitHub available in the project repository.</span>
         </footer>
       </section>
@@ -590,8 +621,573 @@
         ? "http://localhost:8000"
         : `${window.location.protocol}//${window.location.hostname}:8000`;
 
+      const translations = {
+        en: {
+          appName: "Educational Crypto Network",
+          landingTitle: "User wallet, KYC, and blockchain learning made simple.",
+          landingLede: "Create an account, complete KYC, and explore how an educational crypto network works, all in one place.",
+          createAccount: "Create account",
+          signIn: "Sign in",
+          learnHow: "Learn how it works",
+          educationalFlow: "Educational flow",
+          walletsAndTokens: "Wallets and tokens",
+          walletsAndTokensDesc: "Create a wallet and use educational balances in a simple blockchain environment.",
+          complianceFlow: "Compliance flow",
+          kycAndAdminReview: "KYC and admin review",
+          kycAndAdminReviewDesc: "Experience approvals, denials, and resubmissions in a guided workflow.",
+          wallets: "Wallets",
+          walletsDesc: "Create a wallet and manage educational token balances.",
+          kycWorkflow: "KYC workflow",
+          kycWorkflowDesc: "Submit identity information and track approval status.",
+          adminReview: "Admin review",
+          adminReviewDesc: "Review pending requests and manage user access states.",
+          blockchainActivity: "Blockchain activity",
+          blockchainActivityDesc: "See how educational transactions are recorded in a simple network.",
+          howItWorks: "How It Works",
+          threeSimpleSteps: "Three simple steps.",
+          signUp: "Sign up",
+          signUpDesc: "Create your account and get an educational wallet.",
+          completeKyc: "Complete KYC",
+          completeKycDesc: "Submit your identity details and wait for review.",
+          useWallet: "Use the wallet",
+          useWalletDesc: "Receive tokens immediately and send them after approval.",
+          educationNoticeTitle: "This is an educational blockchain environment.",
+          educationNoticeDesc: "No real funds are used, and every workflow exists for learning purposes only.",
+          about: "About",
+          documentation: "Documentation",
+          disclaimer: "Disclaimer",
+          githubAvailable: "GitHub available in the project repository.",
+          documentationEyebrow: "Documentation",
+          documentationTitle: "What this demo includes.",
+          documentationItem1Title: "Accounts and sessions",
+          documentationItem1Body: "Users can register, sign in, and access role-based screens for learning flows.",
+          documentationItem2Title: "KYC workflow",
+          documentationItem2Body: "Identity submissions move through pending, approved, denied, and resubmission states.",
+          documentationItem3Title: "Wallets and transfers",
+          documentationItem3Body: "Balances are derived from chain activity, and verified users can send educational tokens.",
+          documentationItem4Title: "Funding and network view",
+          documentationItem4Body: "Demo purchases credit wallets on-chain, and the UI shows blockchain activity across nodes.",
+          disclaimerEyebrow: "Disclaimer",
+          disclaimerTitle: "Educational use only.",
+          disclaimerItem1Title: "No real money",
+          disclaimerItem1Body: "Credit card and bank account forms are simulated and are not validated against any payment provider.",
+          disclaimerItem2Title: "No financial product",
+          disclaimerItem2Body: "EDU balances, purchases, and transfers are fictional and exist only for demonstration.",
+          disclaimerItem3Title: "No compliance claim",
+          disclaimerItem3Body: "KYC, audit, and admin tools are simplified examples and not production compliance controls.",
+          disclaimerItem4Title: "No custody or recovery guarantee",
+          disclaimerItem4Body: "Because this is a demo ledger, mistakes may require manual compensation or environment reset.",
+          dashboard: "Dashboard",
+          signedInWorkspace: "Signed-in workspace.",
+          signOut: "Sign Out",
+          roleLabel: "Role: {role}",
+          walletBalance: "Wallet Balance",
+          receiveOnly: "Receive only",
+          kycStatus: "KYC Status",
+          completeKycBeforeSending: "Complete KYC before sending funds.",
+          submitKyc: "Submit KYC",
+          quickStats: "Quick Stats",
+          transactions: "Transactions",
+          lastActivity: "Last activity",
+          none: "None",
+          wallet: "Wallet",
+          walletDetailsHere: "Wallet details appear here.",
+          pendingActions: "Pending Actions",
+          actionNeeded: "Action needed",
+          recentTransactions: "Recent Transactions",
+          ready: "Ready",
+          kycSubmission: "KYC Submission",
+          completeKycBeforeSendingOrWithdrawing: "Complete KYC before sending or withdrawing.",
+          documentType: "Document Type",
+          country: "Country",
+          kycNote: "KYC Note",
+          documentSetDetails: "Document set details",
+          submissionHistory: "Submission History",
+          refresh: "Refresh",
+          sendFunds: "Send Funds",
+          locked: "Locked",
+          sendingUnlocksAfterKyc: "Sending unlocks after KYC approval.",
+          from: "From",
+          recipientWallet: "Recipient Wallet",
+          enterWalletAddress: "Enter wallet address",
+          amount: "Amount",
+          send: "Send",
+          buyEdu: "Buy EDU",
+          buyingUnlocksAfterKyc: "Buying unlocks after KYC approval. Demo rate: 1 USD = 1 EDU.",
+          amountUsd: "Amount in USD",
+          paymentMethod: "Payment Method",
+          creditCard: "Credit Card",
+          bankAccount: "Bank Account",
+          generateFakeData: "Generate fake data",
+          cardholderName: "Cardholder Name",
+          cardholderPlaceholder: "Jordan Smith",
+          cardNumber: "Card Number",
+          expiryMonth: "Expiry Month",
+          expiryYear: "Expiry Year",
+          cvv: "CVV",
+          billingZip: "Billing ZIP",
+          accountHolderName: "Account Holder Name",
+          bankName: "Bank Name",
+          accountNumber: "Account Number",
+          routingNumber: "Routing Number",
+          accountType: "Account Type",
+          checking: "Checking",
+          savings: "Savings",
+          allTransactions: "All Transactions",
+          all: "All",
+          sent: "Sent",
+          received: "Received",
+          purchased: "Purchased",
+          expandAll: "Expand all",
+          collapseAll: "Collapse all",
+          blockchainNetwork: "Blockchain Network",
+          educationalNetworkOnly: "Educational network activity only. This is secondary to your wallet workflow.",
+          pendingKycReviews: "Pending KYC reviews",
+          totalUsers: "Total users",
+          verifiedUsers: "Verified users",
+          resubmissionRequired: "Resubmission required",
+          network: "Network",
+          nodes: "nodes",
+          operationalSummary: "Operational Summary",
+          adminOnly: "Admin only",
+          quickActions: "Quick Actions",
+          reviewPendingKycRequests: "Review pending KYC requests",
+          reviewPendingKycRequestsDesc: "Use the KYC Reviews tab to approve, deny, or request resubmission.",
+          searchUsers: "Search users",
+          searchUsersDesc: "Use the Users tab to filter by role, KYC status, or account status.",
+          pendingKycReviewsTitle: "Pending KYC Reviews",
+          users: "Users",
+          loadingUsers: "Loading users...",
+          searchUsersPlaceholder: "Search name, email, wallet, or user id",
+          allRoles: "All roles",
+          user: "User",
+          admin: "Admin",
+          allKycStatuses: "All KYC statuses",
+          notSubmitted: "Not submitted",
+          pending: "Pending",
+          verified: "Verified",
+          denied: "Denied",
+          allAccountStatuses: "All account statuses",
+          active: "Active",
+          suspended: "Suspended",
+          blocked: "Blocked",
+          created: "Created",
+          actions: "Actions",
+          noUsersMatch: "No users match your search.",
+          loadingNetwork: "Loading network...",
+          adminActivity: "Admin Activity",
+          showLast: "Show last",
+          number: "Number",
+          recentEvents: "Recent events",
+          accountAccess: "Account Access",
+          createYourAccount: "Create your account",
+          register: "Register",
+          name: "Name",
+          newUserName: "New user name",
+          email: "Email",
+          emailPlaceholder: "you@example.com",
+          password: "Password",
+          passwordPlaceholder: "Enter your password",
+          close: "Close",
+          userDetails: "User Details",
+          adminNote: "Admin note",
+          reasonOrAdminNote: "Reason or admin note",
+          kycActions: "KYC Actions",
+          accountActions: "Account Actions",
+          kycHistory: "KYC History",
+          confirmAction: "Confirm Action",
+          areYouSure: "Are you sure?",
+          pleaseConfirm: "Please confirm this change.",
+          no: "No",
+          yes: "Yes",
+          invalidCredentials: "Email or password are not valid. Try again.",
+          accountSuspended: "Your account is suspended. Please contact an administrator.",
+          accountBlocked: "Your account is blocked. Please contact an administrator.",
+          emailExists: "An account with that email already exists. You can sign in or use forgot password to reset your password.",
+          genericError: "Something went wrong. Please try again.",
+          approveKyc: "Approve KYC",
+          denyKyc: "Deny KYC",
+          markPending: "Mark Pending",
+          forceKycAgain: "Force KYC Again",
+          setActive: "Set Active",
+          suspend: "Suspend",
+          block: "Block",
+          confirmKycUpdate: "Confirm KYC update",
+          confirmAccountUpdate: "Confirm account update",
+          confirmKycChange: "Are you sure you want to change KYC status from {from} to {to}?",
+          confirmAccountChange: "Are you sure you want to change user status from {from} to {to}?",
+          adminConsole: "Admin Console",
+          adminSubtitle: "Manage KYC reviews, users, and educational system activity.",
+          welcomeBack: "Welcome back, {name}",
+          userSubtitle: "Manage your wallet, KYC status, and recent activity.",
+          overview: "Overview",
+          kycReviews: "KYC Reviews",
+          walletReady: "Wallet ready",
+          walletReadyDesc: "Your account is verified and ready to send educational tokens.",
+          submitKycAlert: "Submit KYC",
+          submitKycAlertDesc: "You can receive now, but sending stays locked until KYC is approved.",
+          kycPending: "KYC pending",
+          kycPendingDesc: "Your submission is waiting for admin review.",
+          resubmissionAlert: "Resubmission required",
+          resubmissionAlertDesc: "Your KYC was denied. Update and resubmit.",
+          noWalletFound: "No wallet found.",
+          walletWillAppear: "Your wallet will appear here.",
+          noKycSubmissions: "No KYC submissions found.",
+          submitKycToStart: "Submit KYC to start the review process.",
+          noTransactions: "No transactions yet.",
+          activityWillAppear: "Your activity will appear here after receiving or sending tokens.",
+          fiatOnRamp: "Fiat on-ramp",
+          details: "Details",
+          hide: "Hide",
+          transactionId: "Transaction ID",
+          type: "Type",
+          to: "To",
+          balanceBefore: "Balance Before",
+          balanceAfter: "Balance After",
+          unavailable: "Unavailable",
+          demoFundingInto: "Demo funding into {wallet}",
+          pendingRequestsNeedAction: "{count} requests need action.",
+          usersMatchFilters: "{count} users currently match the selected filters.",
+          usersCanSendFunds: "{count} users can send funds.",
+          noPendingReviews: "No pending reviews.",
+          allKycRequestsUpToDate: "All KYC requests are up to date.",
+          submittedAt: "submitted {date}",
+          denyReasonPlaceholder: "Reason if denying or requesting resubmission",
+          requestResubmission: "Request resubmission",
+          viewUser: "View user",
+          noRecentActivity: "No recent activity.",
+          adminEventsWillAppear: "Admin events will appear here.",
+          heightLabel: "Height {height}",
+          noNetworkActivity: "No network activity yet.",
+          blockchainEventsWillAppear: "Recent blockchain events will appear here.",
+          userHasNoKyc: "This user has not submitted KYC yet.",
+          noNote: "No note",
+          addAdminNote: "Add an admin note before using this action.",
+          actionCompleted: "Action completed successfully.",
+          actionFailed: "Action failed.",
+          accountCreated: "Account created. Sign in with your new credentials.",
+          enterRecipientWallet: "Enter a recipient wallet address.",
+          enterValidAmount: "Enter a valid amount.",
+          confirmTransfer: "Confirm transfer",
+          confirmTransferMessage: "Are you sure you want to send {amount} EDU from {from} to {to}?",
+          transferCompleted: "Transfer completed successfully.",
+          transferFailed: "Transfer failed. Check the recipient wallet and try again.",
+          noWalletForUser: "No wallet found for this user.",
+          completeRequiredFields: "Complete required fields: {fields}.",
+          confirmPurchase: "Confirm purchase",
+          confirmPurchaseMessage: "Are you sure you want to buy {amount} EDU for {amount} USD using {method}?",
+          cardMethod: "a credit card",
+          bankMethod: "a bank account",
+          purchaseFailed: "Purchase failed.",
+          fundsAdded: "Funds added successfully: {amount} EDU credited.",
+          reviewUpdated: "Review updated successfully.",
+          reviewUpdateFailed: "Review update failed.",
+          sendEnabled: "KYC approved. Sending is enabled.",
+          sendRequiresKyc: "KYC approval is required before sending.",
+          purchaseEnabled: "KYC approved. Buy simulated EDU at a fixed 1 USD = 1 EDU rate.",
+          purchaseRequiresKyc: "KYC approval is required before buying educational funds.",
+          resubmitKyc: "Resubmit KYC",
+          kycApproved: "KYC Approved",
+          role: "Role",
+          account: "Account",
+          loadingUsersShort: "Loading users...",
+          pendingCount: "{count} pending",
+          noRecent: "No recent activity.",
+          purchasedFor: "Bought {edu} EDU for {usd} USD",
+        },
+        es: {
+          appName: "Red Cripto Educativa",
+          landingTitle: "Billetera, KYC y aprendizaje blockchain en un solo lugar.",
+          landingLede: "Crea una cuenta, completa KYC y explora cómo funciona una red cripto educativa en un solo lugar.",
+          createAccount: "Crear cuenta",
+          signIn: "Iniciar sesión",
+          learnHow: "Aprender cómo funciona",
+          educationalFlow: "Flujo educativo",
+          walletsAndTokens: "Billeteras y tokens",
+          walletsAndTokensDesc: "Crea una billetera y usa balances educativos en un entorno blockchain simple.",
+          complianceFlow: "Flujo de cumplimiento",
+          kycAndAdminReview: "KYC y revisión admin",
+          kycAndAdminReviewDesc: "Experimenta aprobaciones, rechazos y reenvíos en un flujo guiado.",
+          wallets: "Billeteras",
+          walletsDesc: "Crea una billetera y administra balances de tokens educativos.",
+          kycWorkflow: "Flujo KYC",
+          kycWorkflowDesc: "Envía información de identidad y sigue el estado de aprobación.",
+          adminReview: "Revisión admin",
+          adminReviewDesc: "Revisa solicitudes pendientes y gestiona estados de acceso.",
+          blockchainActivity: "Actividad blockchain",
+          blockchainActivityDesc: "Observa cómo se registran transacciones educativas en la red.",
+          howItWorks: "Cómo Funciona",
+          threeSimpleSteps: "Tres pasos simples.",
+          signUp: "Regístrate",
+          signUpDesc: "Crea tu cuenta y obtén una billetera educativa.",
+          completeKyc: "Completa KYC",
+          completeKycDesc: "Envía tus datos de identidad y espera la revisión.",
+          useWallet: "Usa la billetera",
+          useWalletDesc: "Recibe tokens de inmediato y envíalos después de la aprobación.",
+          educationNoticeTitle: "Este es un entorno blockchain educativo.",
+          educationNoticeDesc: "No se usan fondos reales y cada flujo existe solo con fines de aprendizaje.",
+          about: "Acerca de",
+          documentation: "Documentación",
+          disclaimer: "Descargo",
+          githubAvailable: "GitHub disponible en el repositorio del proyecto.",
+          documentationEyebrow: "Documentación",
+          documentationTitle: "Qué incluye esta demo.",
+          documentationItem1Title: "Cuentas y sesiones",
+          documentationItem1Body: "Los usuarios pueden registrarse, iniciar sesión y acceder a pantallas por rol para flujos de aprendizaje.",
+          documentationItem2Title: "Flujo KYC",
+          documentationItem2Body: "Los envíos de identidad pasan por estados de pendiente, aprobado, rechazado y reenvío.",
+          documentationItem3Title: "Billeteras y transferencias",
+          documentationItem3Body: "Los balances se derivan de la actividad en cadena, y los usuarios verificados pueden enviar tokens educativos.",
+          documentationItem4Title: "Fondos y vista de red",
+          documentationItem4Body: "Las compras demo acreditan billeteras en cadena, y la UI muestra actividad blockchain entre nodos.",
+          disclaimerEyebrow: "Descargo",
+          disclaimerTitle: "Solo para uso educativo.",
+          disclaimerItem1Title: "No hay dinero real",
+          disclaimerItem1Body: "Los formularios de tarjeta y cuenta bancaria son simulados y no se validan con ningún proveedor de pagos.",
+          disclaimerItem2Title: "No es un producto financiero",
+          disclaimerItem2Body: "Los balances, compras y transferencias de EDU son ficticios y existen solo para demostración.",
+          disclaimerItem3Title: "No es cumplimiento real",
+          disclaimerItem3Body: "Las herramientas de KYC, auditoría y administración son ejemplos simplificados y no controles reales de producción.",
+          disclaimerItem4Title: "Sin garantía de custodia o recuperación",
+          disclaimerItem4Body: "Como este es un libro mayor demo, algunos errores pueden requerir compensación manual o reinicio del entorno.",
+          dashboard: "Panel",
+          signedInWorkspace: "Espacio autenticado.",
+          signOut: "Cerrar sesión",
+          roleLabel: "Rol: {role}",
+          walletBalance: "Balance de la billetera",
+          receiveOnly: "Solo recibir",
+          kycStatus: "Estado KYC",
+          completeKycBeforeSending: "Completa KYC antes de enviar fondos.",
+          submitKyc: "Enviar KYC",
+          quickStats: "Estadísticas rápidas",
+          transactions: "Transacciones",
+          lastActivity: "Última actividad",
+          none: "Ninguna",
+          wallet: "Billetera",
+          walletDetailsHere: "Los detalles de la billetera aparecen aquí.",
+          pendingActions: "Acciones pendientes",
+          actionNeeded: "Acción necesaria",
+          recentTransactions: "Transacciones recientes",
+          ready: "Listo",
+          kycSubmission: "Envío KYC",
+          completeKycBeforeSendingOrWithdrawing: "Completa KYC antes de enviar o retirar.",
+          documentType: "Tipo de documento",
+          country: "País",
+          kycNote: "Nota KYC",
+          documentSetDetails: "Detalles del conjunto de documentos",
+          submissionHistory: "Historial de envíos",
+          refresh: "Actualizar",
+          sendFunds: "Enviar fondos",
+          locked: "Bloqueado",
+          sendingUnlocksAfterKyc: "El envío se habilita después de la aprobación KYC.",
+          from: "Desde",
+          recipientWallet: "Billetera destino",
+          enterWalletAddress: "Ingresa la dirección de la billetera",
+          amount: "Monto",
+          send: "Enviar",
+          buyEdu: "Comprar EDU",
+          buyingUnlocksAfterKyc: "La compra se habilita después de la aprobación KYC. Tasa demo: 1 USD = 1 EDU.",
+          amountUsd: "Monto en USD",
+          paymentMethod: "Método de pago",
+          creditCard: "Tarjeta de crédito",
+          bankAccount: "Cuenta bancaria",
+          generateFakeData: "Generar datos falsos",
+          cardholderName: "Nombre del titular",
+          cardholderPlaceholder: "Jordan Smith",
+          cardNumber: "Número de tarjeta",
+          expiryMonth: "Mes de vencimiento",
+          expiryYear: "Año de vencimiento",
+          cvv: "CVV",
+          billingZip: "ZIP de facturación",
+          accountHolderName: "Titular de la cuenta",
+          bankName: "Banco",
+          accountNumber: "Número de cuenta",
+          routingNumber: "Número ABA",
+          accountType: "Tipo de cuenta",
+          checking: "Corriente",
+          savings: "Ahorros",
+          allTransactions: "Todas las transacciones",
+          all: "Todas",
+          sent: "Enviadas",
+          received: "Recibidas",
+          purchased: "Compradas",
+          expandAll: "Expandir todo",
+          collapseAll: "Colapsar todo",
+          blockchainNetwork: "Red blockchain",
+          educationalNetworkOnly: "Actividad solo de la red educativa. Es secundaria respecto al flujo de la billetera.",
+          pendingKycReviews: "Revisiones KYC pendientes",
+          totalUsers: "Usuarios totales",
+          verifiedUsers: "Usuarios verificados",
+          resubmissionRequired: "Reenvío requerido",
+          network: "Red",
+          nodes: "nodos",
+          operationalSummary: "Resumen operativo",
+          adminOnly: "Solo admin",
+          quickActions: "Acciones rápidas",
+          reviewPendingKycRequests: "Revisar solicitudes KYC pendientes",
+          reviewPendingKycRequestsDesc: "Usa la pestaña de revisiones KYC para aprobar, rechazar o pedir reenvío.",
+          searchUsers: "Buscar usuarios",
+          searchUsersDesc: "Usa la pestaña de usuarios para filtrar por rol, estado KYC o estado de cuenta.",
+          pendingKycReviewsTitle: "Revisiones KYC pendientes",
+          users: "Usuarios",
+          loadingUsers: "Cargando usuarios...",
+          searchUsersPlaceholder: "Buscar nombre, correo, billetera o id de usuario",
+          allRoles: "Todos los roles",
+          user: "Usuario",
+          admin: "Admin",
+          allKycStatuses: "Todos los estados KYC",
+          notSubmitted: "No enviado",
+          pending: "Pendiente",
+          verified: "Verificado",
+          denied: "Rechazado",
+          allAccountStatuses: "Todos los estados de cuenta",
+          active: "Activa",
+          suspended: "Suspendida",
+          blocked: "Bloqueada",
+          created: "Creado",
+          actions: "Acciones",
+          noUsersMatch: "No hay usuarios que coincidan con la búsqueda.",
+          loadingNetwork: "Cargando red...",
+          adminActivity: "Actividad admin",
+          showLast: "Mostrar últimas",
+          number: "Número",
+          recentEvents: "Eventos recientes",
+          accountAccess: "Acceso a la cuenta",
+          createYourAccount: "Crea tu cuenta",
+          register: "Registrarse",
+          name: "Nombre",
+          newUserName: "Nombre del nuevo usuario",
+          email: "Correo",
+          emailPlaceholder: "tu@ejemplo.com",
+          password: "Contraseña",
+          passwordPlaceholder: "Ingresa tu contraseña",
+          close: "Cerrar",
+          userDetails: "Detalles del usuario",
+          adminNote: "Nota admin",
+          reasonOrAdminNote: "Motivo o nota admin",
+          kycActions: "Acciones KYC",
+          accountActions: "Acciones de cuenta",
+          kycHistory: "Historial KYC",
+          confirmAction: "Confirmar acción",
+          areYouSure: "¿Estás seguro?",
+          pleaseConfirm: "Confirma este cambio.",
+          no: "No",
+          yes: "Sí",
+          invalidCredentials: "El correo o la contraseña no son válidos. Intenta de nuevo.",
+          accountSuspended: "Tu cuenta está suspendida. Contacta a un administrador.",
+          accountBlocked: "Tu cuenta está bloqueada. Contacta a un administrador.",
+          emailExists: "Ya existe una cuenta con ese correo. Puedes iniciar sesión o usar recuperación de contraseña.",
+          genericError: "Algo salió mal. Intenta de nuevo.",
+          approveKyc: "Aprobar KYC",
+          denyKyc: "Rechazar KYC",
+          markPending: "Marcar pendiente",
+          forceKycAgain: "Forzar nuevo KYC",
+          setActive: "Activar",
+          suspend: "Suspender",
+          block: "Bloquear",
+          confirmKycUpdate: "Confirmar actualización KYC",
+          confirmAccountUpdate: "Confirmar actualización de cuenta",
+          confirmKycChange: "¿Seguro que quieres cambiar el estado KYC de {from} a {to}?",
+          confirmAccountChange: "¿Seguro que quieres cambiar el estado de cuenta de {from} a {to}?",
+          adminConsole: "Consola admin",
+          adminSubtitle: "Gestiona revisiones KYC, usuarios y actividad educativa del sistema.",
+          welcomeBack: "Bienvenido, {name}",
+          userSubtitle: "Gestiona tu billetera, estado KYC y actividad reciente.",
+          overview: "Resumen",
+          kycReviews: "Revisiones KYC",
+          walletReady: "Billetera lista",
+          walletReadyDesc: "Tu cuenta está verificada y lista para enviar tokens educativos.",
+          submitKycAlert: "Enviar KYC",
+          submitKycAlertDesc: "Ya puedes recibir, pero enviar seguirá bloqueado hasta aprobar KYC.",
+          kycPending: "KYC pendiente",
+          kycPendingDesc: "Tu envío está esperando revisión admin.",
+          resubmissionAlert: "Reenvío requerido",
+          resubmissionAlertDesc: "Tu KYC fue rechazado. Actualiza y vuelve a enviarlo.",
+          noWalletFound: "No se encontró billetera.",
+          walletWillAppear: "Tu billetera aparecerá aquí.",
+          noKycSubmissions: "No se encontraron envíos KYC.",
+          submitKycToStart: "Envía KYC para iniciar la revisión.",
+          noTransactions: "Aún no hay transacciones.",
+          activityWillAppear: "Tu actividad aparecerá aquí después de recibir o enviar tokens.",
+          fiatOnRamp: "Entrada fiat",
+          details: "Detalles",
+          hide: "Ocultar",
+          transactionId: "ID de transacción",
+          type: "Tipo",
+          to: "Hacia",
+          balanceBefore: "Balance antes",
+          balanceAfter: "Balance después",
+          unavailable: "No disponible",
+          demoFundingInto: "Financiamiento demo a {wallet}",
+          pendingRequestsNeedAction: "{count} solicitudes requieren acción.",
+          usersMatchFilters: "{count} usuarios coinciden con los filtros.",
+          usersCanSendFunds: "{count} usuarios pueden enviar fondos.",
+          noPendingReviews: "No hay revisiones pendientes.",
+          allKycRequestsUpToDate: "Todas las solicitudes KYC están al día.",
+          submittedAt: "enviado {date}",
+          denyReasonPlaceholder: "Motivo si rechazas o solicitas reenvío",
+          requestResubmission: "Solicitar reenvío",
+          viewUser: "Ver usuario",
+          noRecentActivity: "No hay actividad reciente.",
+          adminEventsWillAppear: "Los eventos admin aparecerán aquí.",
+          heightLabel: "Altura {height}",
+          noNetworkActivity: "Aún no hay actividad de red.",
+          blockchainEventsWillAppear: "Los eventos recientes de blockchain aparecerán aquí.",
+          userHasNoKyc: "Este usuario no ha enviado KYC.",
+          noNote: "Sin nota",
+          addAdminNote: "Agrega una nota admin antes de usar esta acción.",
+          actionCompleted: "Acción completada correctamente.",
+          actionFailed: "La acción falló.",
+          accountCreated: "Cuenta creada. Inicia sesión con tus nuevas credenciales.",
+          enterRecipientWallet: "Ingresa una dirección de billetera destino.",
+          enterValidAmount: "Ingresa un monto válido.",
+          confirmTransfer: "Confirmar transferencia",
+          confirmTransferMessage: "¿Seguro que quieres enviar {amount} EDU desde {from} a {to}?",
+          transferCompleted: "Transferencia completada correctamente.",
+          transferFailed: "La transferencia falló. Revisa la billetera destino e intenta otra vez.",
+          noWalletForUser: "No se encontró billetera para este usuario.",
+          completeRequiredFields: "Completa los campos requeridos: {fields}.",
+          confirmPurchase: "Confirmar compra",
+          confirmPurchaseMessage: "¿Seguro que quieres comprar {amount} EDU por {amount} USD usando {method}?",
+          cardMethod: "una tarjeta de crédito",
+          bankMethod: "una cuenta bancaria",
+          purchaseFailed: "La compra falló.",
+          fundsAdded: "Fondos agregados correctamente: {amount} EDU acreditados.",
+          reviewUpdated: "Revisión actualizada correctamente.",
+          reviewUpdateFailed: "La actualización de la revisión falló.",
+          sendEnabled: "KYC aprobado. El envío está habilitado.",
+          sendRequiresKyc: "La aprobación KYC es obligatoria antes de enviar.",
+          purchaseEnabled: "KYC aprobado. Compra EDU simulado con una tasa fija de 1 USD = 1 EDU.",
+          purchaseRequiresKyc: "La aprobación KYC es obligatoria antes de comprar fondos educativos.",
+          resubmitKyc: "Reenviar KYC",
+          kycApproved: "KYC aprobado",
+          role: "Rol",
+          account: "Cuenta",
+          loadingUsersShort: "Cargando usuarios...",
+          pendingCount: "{count} pendientes",
+          noRecent: "No hay actividad reciente.",
+          purchasedFor: "Compró {edu} EDU por {usd} USD",
+        },
+      };
+
+      function detectBrowserLanguage() {
+        const saved = window.localStorage.getItem("language");
+        if (saved === "en" || saved === "es") return saved;
+        return navigator.language?.toLowerCase().startsWith("es") ? "es" : "en";
+      }
+
+      function t(key, vars = {}) {
+        const source = translations[state.language] || translations.en;
+        const template = source[key] ?? translations.en[key] ?? key;
+        return Object.entries(vars).reduce(
+          (value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement),
+          template,
+        );
+      }
+
       const state = {
         token: window.sessionStorage.getItem("sessionToken") || "",
+        language: detectBrowserLanguage(),
         currentUser: null,
         authMode: "signin",
         ownerWallets: [],
@@ -642,15 +1238,264 @@
         document.getElementById(id).textContent = value;
       }
 
+      function currentLocale() {
+        return state.language === "es" ? "es-ES" : "en-US";
+      }
+
+      function translateRole(role) {
+        return role === "admin" ? t("admin") : t("user");
+      }
+
+      function setLanguage(lang, rerender = true) {
+        state.language = lang === "es" ? "es" : "en";
+        window.localStorage.setItem("language", state.language);
+        document.documentElement.lang = state.language;
+        document.querySelectorAll("[data-language]").forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.language === state.language);
+        });
+        applyStaticTranslations();
+        if (!rerender) return;
+        if (state.currentUser) {
+          setLayoutForRole();
+          if (state.currentUser.role === "admin") renderAdminDashboard();
+          else renderUserDashboard(state.userTransactions);
+        } else {
+          setLayoutForRole();
+          setAuthMode(state.authMode);
+        }
+      }
+
       function setFeedback(message, tone = "") {
         const el = document.getElementById("auth-feedback");
         el.textContent = message || "";
         el.className = `tiny ${tone}`.trim();
       }
 
+      function applyStaticTranslations() {
+        document.title = t("appName");
+        const heroCopy = document.querySelector(".hero-copy");
+        heroCopy.querySelector(".eyebrow").textContent = t("appName");
+        heroCopy.querySelector("h1").textContent = t("landingTitle");
+        heroCopy.querySelector(".lede").textContent = t("landingLede");
+        document.getElementById("open-register").textContent = t("createAccount");
+        document.getElementById("open-signin").textContent = t("signIn");
+        heroCopy.querySelector(".text-link").textContent = t("learnHow");
+
+        const heroPanels = document.querySelectorAll(".hero-panel-card");
+        heroPanels[0].querySelector(".panel-kicker").textContent = t("educationalFlow");
+        heroPanels[0].querySelector("strong").textContent = t("walletsAndTokens");
+        heroPanels[0].querySelector("p").textContent = t("walletsAndTokensDesc");
+        heroPanels[1].querySelector(".panel-kicker").textContent = t("complianceFlow");
+        heroPanels[1].querySelector("strong").textContent = t("kycAndAdminReview");
+        heroPanels[1].querySelector("p").textContent = t("kycAndAdminReviewDesc");
+
+        const featureCards = document.querySelectorAll(".feature-card");
+        featureCards[0].querySelector("h2").textContent = t("wallets");
+        featureCards[0].querySelector("p").textContent = t("walletsDesc");
+        featureCards[1].querySelector("h2").textContent = t("kycWorkflow");
+        featureCards[1].querySelector("p").textContent = t("kycWorkflowDesc");
+        featureCards[2].querySelector("h2").textContent = t("adminReview");
+        featureCards[2].querySelector("p").textContent = t("adminReviewDesc");
+        featureCards[3].querySelector("h2").textContent = t("blockchainActivity");
+        featureCards[3].querySelector("p").textContent = t("blockchainActivityDesc");
+
+        const howSection = document.querySelector("#how-it-works");
+        howSection.querySelector(".eyebrow").textContent = t("howItWorks");
+        howSection.querySelector("h2").textContent = t("threeSimpleSteps");
+        const stepCards = howSection.querySelectorAll(".step-card");
+        stepCards[0].querySelector("h3").textContent = t("signUp");
+        stepCards[0].querySelector("p").textContent = t("signUpDesc");
+        stepCards[1].querySelector("h3").textContent = t("completeKyc");
+        stepCards[1].querySelector("p").textContent = t("completeKycDesc");
+        stepCards[2].querySelector("h3").textContent = t("useWallet");
+        stepCards[2].querySelector("p").textContent = t("useWalletDesc");
+
+        const notice = document.getElementById("education-notice");
+        notice.querySelector("strong").textContent = t("educationNoticeTitle");
+        notice.querySelector("span").textContent = t("educationNoticeDesc");
+
+        const footerLinks = document.querySelectorAll(".landing-footer a");
+        footerLinks[0].textContent = t("about");
+        footerLinks[1].textContent = t("documentation");
+        footerLinks[2].textContent = t("disclaimer");
+        document.querySelector(".landing-footer .muted").textContent = t("githubAvailable");
+
+        const documentation = document.getElementById("documentation-section");
+        documentation.querySelector(".eyebrow").textContent = t("documentationEyebrow");
+        documentation.querySelector("h2").textContent = t("documentationTitle");
+        const documentationItems = documentation.querySelectorAll(".info-list > div");
+        documentationItems[0].querySelector("strong").textContent = t("documentationItem1Title");
+        documentationItems[0].querySelector("span").textContent = t("documentationItem1Body");
+        documentationItems[1].querySelector("strong").textContent = t("documentationItem2Title");
+        documentationItems[1].querySelector("span").textContent = t("documentationItem2Body");
+        documentationItems[2].querySelector("strong").textContent = t("documentationItem3Title");
+        documentationItems[2].querySelector("span").textContent = t("documentationItem3Body");
+        documentationItems[3].querySelector("strong").textContent = t("documentationItem4Title");
+        documentationItems[3].querySelector("span").textContent = t("documentationItem4Body");
+
+        const disclaimer = document.getElementById("disclaimer-section");
+        disclaimer.querySelector(".eyebrow").textContent = t("disclaimerEyebrow");
+        disclaimer.querySelector("h2").textContent = t("disclaimerTitle");
+        const disclaimerItems = disclaimer.querySelectorAll(".info-list > div");
+        disclaimerItems[0].querySelector("strong").textContent = t("disclaimerItem1Title");
+        disclaimerItems[0].querySelector("span").textContent = t("disclaimerItem1Body");
+        disclaimerItems[1].querySelector("strong").textContent = t("disclaimerItem2Title");
+        disclaimerItems[1].querySelector("span").textContent = t("disclaimerItem2Body");
+        disclaimerItems[2].querySelector("strong").textContent = t("disclaimerItem3Title");
+        disclaimerItems[2].querySelector("span").textContent = t("disclaimerItem3Body");
+        disclaimerItems[3].querySelector("strong").textContent = t("disclaimerItem4Title");
+        disclaimerItems[3].querySelector("span").textContent = t("disclaimerItem4Body");
+
+        setText("app-kicker", t("appName"));
+        document.getElementById("logout-button").textContent = t("signOut");
+
+        const userSummaryCards = document.querySelectorAll("#user-dashboard .summary-card");
+        userSummaryCards[0].querySelector(".metric-label").textContent = t("walletBalance");
+        userSummaryCards[1].querySelector(".metric-label").textContent = t("kycStatus");
+        userSummaryCards[2].querySelector(".metric-label").textContent = t("quickStats");
+        userSummaryCards[2].querySelectorAll(".mini-stats span")[0].textContent = t("transactions");
+        userSummaryCards[2].querySelectorAll(".mini-stats span")[1].textContent = t("lastActivity");
+
+        const overviewCards = document.querySelectorAll("#user-tab-overview .card");
+        overviewCards[0].querySelector("h2").textContent = t("wallet");
+        overviewCards[1].querySelector("h2").textContent = t("pendingActions");
+        overviewCards[2].querySelector("h2").textContent = t("recentTransactions");
+        setText("history-status", t("ready"));
+
+        const kycCards = document.querySelectorAll("#user-tab-kyc .card");
+        kycCards[0].querySelector("h2").textContent = t("kycSubmission");
+        kycCards[1].querySelector("h2").textContent = t("submissionHistory");
+        document.getElementById("refresh-button").textContent = t("refresh");
+        document.querySelector('label[for="document-type"], #document-type').closest("label").querySelector("span").textContent = t("documentType");
+        document.querySelector('#country-input').closest("label").querySelector("span").textContent = t("country");
+        document.querySelector('#kyc-note').closest("label").querySelector("span").textContent = t("kycNote");
+        document.getElementById("kyc-note").placeholder = t("documentSetDetails");
+        document.getElementById("kyc-submit-button").textContent = t("submitKyc");
+
+        const transactionCards = document.querySelectorAll("#user-tab-transactions .card");
+        transactionCards[0].querySelector("h2").textContent = t("sendFunds");
+        transactionCards[1].querySelector("h2").textContent = t("buyEdu");
+        transactionCards[2].querySelector("h2").textContent = t("allTransactions");
+        document.querySelector("#sender-select").closest("label").querySelector("span").textContent = t("from");
+        document.querySelector("#recipient-wallet-input").closest("label").querySelector("span").textContent = t("recipientWallet");
+        document.getElementById("recipient-wallet-input").placeholder = t("enterWalletAddress");
+        document.querySelector("#amount-input").closest("label").querySelector("span").textContent = t("amount");
+        document.getElementById("send-button").textContent = t("send");
+        document.querySelector("#purchase-amount-input").closest("label").querySelector("span").textContent = t("amountUsd");
+        document.querySelector("#purchase-method-select").closest("label").querySelector("span").textContent = t("paymentMethod");
+        document.getElementById("purchase-method-select").options[0].text = t("creditCard");
+        document.getElementById("purchase-method-select").options[1].text = t("bankAccount");
+        document.getElementById("purchase-fake-data").textContent = t("generateFakeData");
+        document.querySelector("#cardholder-name-input").closest("label").querySelector("span").textContent = t("cardholderName");
+        document.getElementById("cardholder-name-input").placeholder = t("cardholderPlaceholder");
+        document.querySelector("#card-number-input").closest("label").querySelector("span").textContent = t("cardNumber");
+        document.querySelector("#card-expiry-month-input").closest("label").querySelector("span").textContent = t("expiryMonth");
+        document.querySelector("#card-expiry-year-input").closest("label").querySelector("span").textContent = t("expiryYear");
+        document.querySelector("#card-cvv-input").closest("label").querySelector("span").textContent = t("cvv");
+        document.querySelector("#card-billing-zip-input").closest("label").querySelector("span").textContent = t("billingZip");
+        document.querySelector("#bank-holder-name-input").closest("label").querySelector("span").textContent = t("accountHolderName");
+        document.querySelector("#bank-name-input").closest("label").querySelector("span").textContent = t("bankName");
+        document.querySelector("#bank-routing-input").closest("label").querySelector("span").textContent = t("routingNumber");
+        document.querySelector("#bank-account-input").closest("label").querySelector("span").textContent = t("accountNumber");
+        document.querySelector("#bank-account-type-input").closest("label").querySelector("span").textContent = t("accountType");
+        document.getElementById("bank-account-type-input").options[0].text = t("checking");
+        document.getElementById("bank-account-type-input").options[1].text = t("savings");
+        document.getElementById("purchase-button").textContent = t("buyEdu");
+        const historyFilters = document.querySelectorAll("[data-user-history]");
+        historyFilters[0].textContent = t("all");
+        historyFilters[1].textContent = t("sent");
+        historyFilters[2].textContent = t("received");
+        historyFilters[3].textContent = t("purchased");
+
+        const networkCard = document.querySelector("#user-tab-network .card");
+        networkCard.querySelector("h2").textContent = t("blockchainNetwork");
+        networkCard.querySelector("p.muted").textContent = t("educationalNetworkOnly");
+
+        const adminSummary = document.querySelectorAll("#admin-dashboard .summary-card .metric-label");
+        adminSummary[0].textContent = t("pendingKycReviews");
+        adminSummary[1].textContent = t("totalUsers");
+        adminSummary[2].textContent = t("verifiedUsers");
+        adminSummary[3].textContent = t("resubmissionRequired");
+        adminSummary[4].textContent = t("network");
+
+        const adminOverviewCards = document.querySelectorAll("#admin-tab-overview .card");
+        adminOverviewCards[0].querySelector("h2").textContent = t("operationalSummary");
+        adminOverviewCards[0].querySelector(".pill").textContent = t("adminOnly");
+        adminOverviewCards[1].querySelector("h2").textContent = t("quickActions");
+        document.getElementById("admin-refresh").textContent = t("refresh");
+        const quickHistory = adminOverviewCards[1].querySelectorAll(".history-item");
+        quickHistory[0].querySelector("strong").textContent = t("reviewPendingKycRequests");
+        quickHistory[0].querySelector(".muted").textContent = t("reviewPendingKycRequestsDesc");
+        quickHistory[1].querySelector("strong").textContent = t("searchUsers");
+        quickHistory[1].querySelector(".muted").textContent = t("searchUsersDesc");
+
+        document.querySelector("#admin-tab-kyc h2").textContent = t("pendingKycReviewsTitle");
+        document.querySelector("#admin-tab-users h2").textContent = t("users");
+        document.querySelector("#users-loading span:last-child").textContent = t("loadingUsers");
+        document.getElementById("users-refresh").textContent = t("refresh");
+        document.getElementById("user-search").placeholder = t("searchUsersPlaceholder");
+        document.getElementById("user-role-filter").options[0].text = t("allRoles");
+        document.getElementById("user-role-filter").options[1].text = t("user");
+        document.getElementById("user-role-filter").options[2].text = t("admin");
+        document.getElementById("user-kyc-filter").options[0].text = t("allKycStatuses");
+        document.getElementById("user-kyc-filter").options[1].text = t("notSubmitted");
+        document.getElementById("user-kyc-filter").options[2].text = t("pending");
+        document.getElementById("user-kyc-filter").options[3].text = t("verified");
+        document.getElementById("user-kyc-filter").options[4].text = t("denied");
+        document.getElementById("user-account-filter").options[0].text = t("allAccountStatuses");
+        document.getElementById("user-account-filter").options[1].text = t("active");
+        document.getElementById("user-account-filter").options[2].text = t("suspended");
+        document.getElementById("user-account-filter").options[3].text = t("blocked");
+        const headers = Array.from(document.querySelectorAll(".data-table th"));
+        headers[0].textContent = t("name");
+        headers[1].textContent = t("email");
+        headers[2].textContent = t("wallet");
+        headers[3].textContent = t("role");
+        headers[4].textContent = "KYC";
+        headers[5].textContent = t("account");
+        headers[6].textContent = t("created");
+        headers[7].textContent = t("lastActivity");
+        headers[8].textContent = t("actions");
+        document.getElementById("users-empty").textContent = t("noUsersMatch");
+
+        document.querySelector("#admin-tab-network h2").textContent = t("blockchainNetwork");
+        document.querySelector("#admin-network-loading span:last-child").textContent = t("loadingNetwork");
+        document.getElementById("admin-network-refresh").textContent = t("refresh");
+        document.querySelector("#admin-tab-activity h2").textContent = t("adminActivity");
+        document.querySelector(".limit-control span").textContent = t("showLast");
+        document.getElementById("admin-activity-limit").options[5].text = t("number");
+        document.querySelector("#admin-tab-activity .pill").textContent = t("recentEvents");
+
+        document.querySelector("#auth-modal .eyebrow").textContent = t("accountAccess");
+        document.getElementById("close-auth-modal").textContent = t("close");
+        document.getElementById("mode-signin").textContent = t("signIn");
+        document.getElementById("mode-register").textContent = t("register");
+        document.querySelector("#name-field span").textContent = t("name");
+        document.getElementById("name-input").placeholder = t("newUserName");
+        document.querySelector("#email-input").closest("label").querySelector("span").textContent = t("email");
+        document.getElementById("email-input").placeholder = t("emailPlaceholder");
+        document.querySelector("#password-input").closest("label").querySelector("span").textContent = t("password");
+        document.getElementById("password-input").placeholder = t("passwordPlaceholder");
+
+        document.querySelector("#user-drawer h2").textContent = t("userDetails");
+        document.getElementById("close-user-drawer").textContent = t("close");
+        document.querySelector("#drawer-note").closest("label").querySelector("span").textContent = t("adminNote");
+        document.getElementById("drawer-note").placeholder = t("reasonOrAdminNote");
+        document.querySelectorAll("#user-drawer .action-section h3")[0].textContent = t("kycActions");
+        document.querySelectorAll("#user-drawer .action-section h3")[1].textContent = t("accountActions");
+        document.querySelectorAll("#user-drawer .action-section h3")[2].textContent = t("kycHistory");
+
+        document.querySelector("#confirm-modal .eyebrow").textContent = t("confirmAction");
+        document.getElementById("confirm-title").textContent = t("areYouSure");
+        document.getElementById("confirm-message").textContent = t("pleaseConfirm");
+        document.getElementById("confirm-close").textContent = t("close");
+        document.getElementById("confirm-cancel").textContent = t("no");
+        document.getElementById("confirm-accept").textContent = t("yes");
+      }
+
       function formatDate(value) {
-        if (!value) return "None";
-        return new Date(value).toLocaleString();
+        if (!value) return t("none");
+        return new Date(value).toLocaleString(currentLocale());
       }
 
       function shorten(value, size = 6) {
@@ -736,17 +1581,17 @@
 
       function formatKycStatus(status) {
         const normalized = normalizeKycStatus(status);
-        if (normalized === "approved") return "Approved";
-        if (normalized === "pending") return "Pending";
-        if (normalized === "denied") return "Denied";
-        return "Not started";
+        if (normalized === "approved") return t("verified");
+        if (normalized === "pending") return t("pending");
+        if (normalized === "denied") return t("denied");
+        return t("notSubmitted");
       }
 
       function formatUserStatus(status) {
         const normalized = normalizeUserStatus(status);
-        if (normalized === "blocked") return "Blocked";
-        if (normalized === "suspended") return "Suspended";
-        return "Active";
+        if (normalized === "blocked") return t("blocked");
+        if (normalized === "suspended") return t("suspended");
+        return t("active");
       }
 
       function getAvailableKycActions(status) {
@@ -813,20 +1658,20 @@
       }
 
       function authMessageFromError(error) {
-        if (!error) return "Something went wrong. Please try again.";
+        if (!error) return t("genericError");
         if (error.payload?.error === "invalid credentials") {
-          return "Email or password are not valid. Try again.";
+          return t("invalidCredentials");
         }
         if (error.payload?.error === "account_suspended") {
-          return "Your account is suspended. Please contact an administrator.";
+          return t("accountSuspended");
         }
         if (error.payload?.error === "account_blocked") {
-          return "Your account is blocked. Please contact an administrator.";
+          return t("accountBlocked");
         }
         if (error.payload?.error === "email already exists") {
-          return "An account with that email already exists. You can sign in or use forgot password to reset your password.";
+          return t("emailExists");
         }
-        return error.message || "Something went wrong. Please try again.";
+        return error.message || t("genericError");
       }
 
       function requireAdminNote(action) {
@@ -835,36 +1680,36 @@
 
       function actionMeta(action) {
         const map = {
-          approve_kyc: { label: "Approve KYC", kind: "primary" },
-          deny_kyc: { label: "Deny KYC", kind: "danger" },
-          mark_pending: { label: "Mark Pending", kind: "secondary" },
-          force_kyc_again: { label: "Force KYC Again", kind: "secondary" },
-          set_active: { label: "Set Active", kind: "secondary" },
-          suspend: { label: "Suspend", kind: "warning" },
-          block: { label: "Block", kind: "danger" },
+          approve_kyc: { label: t("approveKyc"), kind: "primary" },
+          deny_kyc: { label: t("denyKyc"), kind: "danger" },
+          mark_pending: { label: t("markPending"), kind: "secondary" },
+          force_kyc_again: { label: t("forceKycAgain"), kind: "secondary" },
+          set_active: { label: t("setActive"), kind: "secondary" },
+          suspend: { label: t("suspend"), kind: "warning" },
+          block: { label: t("block"), kind: "danger" },
         };
         return map[action];
       }
 
       function confirmCopy(action, user) {
         const next = {
-          approve_kyc: "approved",
-          deny_kyc: "denied",
-          mark_pending: "pending",
-          force_kyc_again: "not started",
-          set_active: "active",
-          suspend: "suspended",
-          block: "blocked",
+          approve_kyc: t("verified").toLowerCase(),
+          deny_kyc: t("denied").toLowerCase(),
+          mark_pending: t("pending").toLowerCase(),
+          force_kyc_again: t("notSubmitted").toLowerCase(),
+          set_active: t("active").toLowerCase(),
+          suspend: t("suspended").toLowerCase(),
+          block: t("blocked").toLowerCase(),
         }[action];
         if (["approve_kyc", "deny_kyc", "mark_pending", "force_kyc_again"].includes(action)) {
           return {
-            title: "Confirm KYC update",
-            message: `Are you sure you want to change KYC status from ${formatKycStatus(user.kyc_status).toLowerCase()} to ${next}?`,
+            title: t("confirmKycUpdate"),
+            message: t("confirmKycChange", { from: formatKycStatus(user.kyc_status).toLowerCase(), to: next }),
           };
         }
         return {
-          title: "Confirm account update",
-          message: `Are you sure you want to change user status from ${formatUserStatus(user.account_status).toLowerCase()} to ${next}?`,
+          title: t("confirmAccountUpdate"),
+          message: t("confirmAccountChange", { from: formatUserStatus(user.account_status).toLowerCase(), to: next }),
         };
       }
 
@@ -872,8 +1717,8 @@
         state.authMode = mode;
         const registerMode = mode === "register";
         document.getElementById("name-field").classList.toggle("hidden", !registerMode);
-        document.getElementById("auth-submit-button").textContent = registerMode ? "Create account" : "Sign in";
-        document.getElementById("auth-modal-title").textContent = registerMode ? "Create your account" : "Sign in";
+        document.getElementById("auth-submit-button").textContent = registerMode ? t("createAccount") : t("signIn");
+        document.getElementById("auth-modal-title").textContent = registerMode ? t("createYourAccount") : t("signIn");
         document.getElementById("mode-signin").classList.toggle("is-active", !registerMode);
         document.getElementById("mode-register").classList.toggle("is-active", registerMode);
       }
@@ -897,25 +1742,25 @@
         document.getElementById("user-dashboard").classList.toggle("hidden", !isLoggedIn || user?.role !== "user");
         document.getElementById("admin-dashboard").classList.toggle("hidden", !isLoggedIn || user?.role !== "admin");
         if (!user) return;
-        setText("header-role", `Role: ${user.role}`);
+        setText("header-role", t("roleLabel", { role: translateRole(user.role).toLowerCase() }));
         if (user.role === "admin") {
-          setText("app-title", "Admin Console");
-          setText("app-subtitle", "Manage KYC reviews, users, and educational system activity.");
+          setText("app-title", t("adminConsole"));
+          setText("app-subtitle", t("adminSubtitle"));
           renderSubnav([
-            ["overview", "Overview"],
-            ["kyc", "KYC Reviews"],
-            ["users", "Users"],
-            ["network", "Network"],
-            ["activity", "Activity"],
+            ["overview", t("overview")],
+            ["kyc", t("kycReviews")],
+            ["users", t("users")],
+            ["network", t("network")],
+            ["activity", t("adminActivity")],
           ], state.adminTab, "admin");
         } else {
-          setText("app-title", `Welcome back, ${user.name}`);
-          setText("app-subtitle", "Manage your wallet, KYC status, and recent activity.");
+          setText("app-title", t("welcomeBack", { name: user.name }));
+          setText("app-subtitle", t("userSubtitle"));
           renderSubnav([
-            ["overview", "Overview"],
+            ["overview", t("overview")],
             ["kyc", "KYC"],
-            ["transactions", "Transactions"],
-            ["network", "Network"],
+            ["transactions", t("transactions")],
+            ["network", t("network")],
           ], state.userTab, "user");
         }
       }
@@ -933,10 +1778,10 @@
           document.getElementById(`user-tab-${key}`).classList.toggle("hidden", key !== tab);
         });
         renderSubnav([
-          ["overview", "Overview"],
+          ["overview", t("overview")],
           ["kyc", "KYC"],
-          ["transactions", "Transactions"],
-          ["network", "Network"],
+          ["transactions", t("transactions")],
+          ["network", t("network")],
         ], state.userTab, "user");
       }
 
@@ -947,11 +1792,11 @@
           document.getElementById(`admin-tab-${key}`).classList.toggle("hidden", key !== tab);
         });
         renderSubnav([
-          ["overview", "Overview"],
-          ["kyc", "KYC Reviews"],
-          ["users", "Users"],
-          ["network", "Network"],
-          ["activity", "Activity"],
+          ["overview", t("overview")],
+          ["kyc", t("kycReviews")],
+          ["users", t("users")],
+          ["network", t("network")],
+          ["activity", t("adminActivity")],
         ], state.adminTab, "admin");
       }
 
@@ -1065,17 +1910,17 @@
         const canTransfer = user && user.role === "user" && user.kyc_status === "verified";
         setText("user-balance", `${Number(primaryWallet?.balance || 0).toLocaleString()} EDU`);
         setText("user-wallet-short", shorten(primaryWallet?.address || user.wallet_address, 8));
-        setBadge("user-wallet-status", canTransfer ? "Ready to send" : "Receive only", canTransfer ? "verified" : user.kyc_status);
-        setText("user-kyc-status", user.kyc_status.replaceAll("_", " "));
-        setText("user-kyc-caption", user.kyc_submissions?.[0]?.review_note || "Complete KYC before sending funds.");
+        setBadge("user-wallet-status", canTransfer ? t("ready") : t("receiveOnly"), canTransfer ? "verified" : user.kyc_status);
+        setText("user-kyc-status", formatKycStatus(user.kyc_status));
+        setText("user-kyc-caption", user.kyc_submissions?.[0]?.review_note || t("completeKycBeforeSending"));
         setText("wallet-balance", `${Number(primaryWallet?.balance || 0).toLocaleString()} EDU`);
         setText("wallet-caption", `${shorten(user.wallet_address, 10)} • ${primaryWallet?.type || "wallet"} wallet`);
-        setBadge("transfer-capability", canTransfer ? "Send + receive" : "Receive only", canTransfer ? "verified" : user.kyc_status);
-        setBadge("send-status", canTransfer ? "Ready" : "Locked", canTransfer ? "verified" : user.kyc_status);
-        setBadge("purchase-status", canTransfer ? "Ready" : "Locked", canTransfer ? "verified" : user.kyc_status);
-        setBadge("kyc-status", user.kyc_status.replaceAll("_", " "), user.kyc_status);
-        setText("send-caption", canTransfer ? "KYC approved. Sending is enabled." : "KYC approval is required before sending.");
-        setText("purchase-caption", canTransfer ? "KYC approved. Buy simulated EDU at a fixed 1 USD = 1 EDU rate." : "KYC approval is required before buying educational funds.");
+        setBadge("transfer-capability", canTransfer ? `${t("send")} + ${t("received").toLowerCase()}` : t("receiveOnly"), canTransfer ? "verified" : user.kyc_status);
+        setBadge("send-status", canTransfer ? t("ready") : t("locked"), canTransfer ? "verified" : user.kyc_status);
+        setBadge("purchase-status", canTransfer ? t("ready") : t("locked"), canTransfer ? "verified" : user.kyc_status);
+        setBadge("kyc-status", formatKycStatus(user.kyc_status), user.kyc_status);
+        setText("send-caption", canTransfer ? t("sendEnabled") : t("sendRequiresKyc"));
+        setText("purchase-caption", canTransfer ? t("purchaseEnabled") : t("purchaseRequiresKyc"));
         document.getElementById("send-button").disabled = !canTransfer;
         document.getElementById("purchase-button").disabled = !canTransfer;
         document.getElementById("purchase-fake-data").disabled = !canTransfer;
@@ -1086,11 +1931,11 @@
         document.getElementById("document-type").disabled = kycLocked;
         document.getElementById("country-input").readOnly = kycLocked;
         document.getElementById("kyc-note").readOnly = kycLocked;
-        document.getElementById("user-kyc-action").textContent = user.kyc_status === "denied" ? "Resubmit KYC" : user.kyc_status === "verified" ? "KYC Approved" : "Submit KYC";
+        document.getElementById("user-kyc-action").textContent = user.kyc_status === "denied" ? t("resubmitKyc") : user.kyc_status === "verified" ? t("kycApproved") : t("submitKyc");
         document.getElementById("user-kyc-action").disabled = user.kyc_status === "verified";
         document.getElementById("wallet-list").innerHTML = state.ownerWallets.length
           ? state.ownerWallets.map((wallet) => `<div class="wallet-row"><span>${shorten(wallet.address, 10)}</span><strong>${Number(wallet.balance || 0).toLocaleString()} EDU</strong></div>`).join("")
-          : `<div class="history-item"><strong>No wallet found.</strong><span class="muted">Your wallet will appear here.</span></div>`;
+          : `<div class="history-item"><strong>${t("noWalletFound")}</strong><span class="muted">${t("walletWillAppear")}</span></div>`;
         document.getElementById("overview-alerts").innerHTML = buildUserAlerts(user);
         state.userTransactions = transactions;
         renderKycHistory(user);
@@ -1108,16 +1953,16 @@
         const latest = user.kyc_submissions?.[0];
         const items = [];
         if (!latest) {
-          items.push(["Submit KYC", "You can receive now, but sending stays locked until KYC is approved."]);
+          items.push([t("submitKycAlert"), t("submitKycAlertDesc")]);
         } else if (latest.status === "pending_review") {
-          items.push(["KYC pending", "Your submission is waiting for admin review."]);
+          items.push([t("kycPending"), t("kycPendingDesc")]);
         } else if (latest.status === "denied") {
-          items.push(["Resubmission required", latest.review_note || "Your KYC was denied. Update and resubmit."]);
+          items.push([t("resubmissionAlert"), latest.review_note || t("resubmissionAlertDesc")]);
         } else {
-          items.push(["Wallet ready", "Your account is verified and ready to send educational tokens."]);
+          items.push([t("walletReady"), t("walletReadyDesc")]);
         }
         if (!items.length) {
-          items.push(["No pending actions", "Your account is up to date."]);
+          items.push([t("pendingActions"), t("ready")]);
         }
         setBadge("overview-alert-badge", items[0][0], latest?.status || user.kyc_status);
         return items.map(([title, detail]) => `<div class="history-item"><strong>${title}</strong><span class="muted">${detail}</span></div>`).join("");
@@ -1128,12 +1973,12 @@
         document.getElementById("kyc-history").innerHTML = items.length
           ? items.map((submission) => `
               <div class="history-item">
-                <strong>${submission.document_type.replaceAll("_", " ")} • ${submission.status}</strong>
+                <strong>${submission.document_type.replaceAll("_", " ")} • ${formatKycStatus(submission.status)}</strong>
                 <span>${formatDate(submission.submitted_at)}</span>
-                <span class="muted">${submission.review_note || submission.note || "No note provided."}</span>
+                <span class="muted">${submission.review_note || submission.note || t("noNote")}</span>
               </div>
             `).join("")
-          : `<div class="history-item"><strong>No KYC submissions found.</strong><span class="muted">Submit KYC to start the review process.</span></div>`;
+          : `<div class="history-item"><strong>${t("noKycSubmissions")}</strong><span class="muted">${t("submitKycToStart")}</span></div>`;
       }
 
       function filterTransactions(transactions) {
@@ -1142,9 +1987,9 @@
       }
 
       function transactionDirectionMeta(item) {
-        if (item.direction === "outbound") return { label: "Sent", tone: "danger", sign: "-" };
-        if (item.direction === "funding") return { label: "Purchased", tone: "success", sign: "+" };
-        return { label: "Received", tone: "success", sign: "+" };
+        if (item.direction === "outbound") return { label: t("sent"), tone: "danger", sign: "-" };
+        if (item.direction === "funding") return { label: t("purchased"), tone: "success", sign: "+" };
+        return { label: t("received"), tone: "success", sign: "+" };
       }
 
       function formatEdu(value) {
@@ -1183,12 +2028,12 @@
         document.getElementById(targetId).innerHTML = items.length
           ? items.map((item) => `
               <div class="history-item">
-                <strong>${item.direction === "outbound" ? "Sent" : item.direction === "funding" ? "Purchased" : "Received"} ${item.amount} EDU</strong>
+                <strong>${item.direction === "outbound" ? t("sent") : item.direction === "funding" ? t("purchased") : t("received")} ${item.amount} EDU</strong>
                 <span>${formatDate(item.timestamp)}</span>
-                <span class="muted">${item.direction === "funding" ? `Demo funding into ${shorten(item.recipient, 8)}` : `${shorten(item.sender, 8)} → ${shorten(item.recipient, 8)}`}</span>
+                <span class="muted">${item.direction === "funding" ? t("demoFundingInto", { wallet: shorten(item.recipient, 8) }) : `${shorten(item.sender, 8)} → ${shorten(item.recipient, 8)}`}</span>
               </div>
             `).join("")
-          : `<div class="history-item"><strong>No transactions yet.</strong><span class="muted">Your activity will appear here after receiving or sending tokens.</span></div>`;
+          : `<div class="history-item"><strong>${t("noTransactions")}</strong><span class="muted">${t("activityWillAppear")}</span></div>`;
       }
 
       function renderDetailedTransactionHistory(items, currentBalance) {
@@ -1205,32 +2050,32 @@
                       <div class="transaction-title-row">
                         <strong>${meta.label} ${formatEdu(item.amount)}</strong>
                         <span class="pill ${meta.tone}">${meta.label}</span>
-                        <span class="pill ${item.status === "pending" ? "warning" : "success"}">${item.status}</span>
+                        <span class="pill ${item.status === "pending" ? "warning" : "success"}">${item.status === "pending" ? t("pending") : t("verified")}</span>
                       </div>
                       <div class="transaction-meta-row">
                         <span>${formatDate(item.timestamp)}</span>
-                        <span>${item.direction === "funding" ? "Fiat on-ramp" : `${shorten(item.sender, 10)} -> ${shorten(item.recipient, 10)}`}</span>
+                        <span>${item.direction === "funding" ? t("fiatOnRamp") : `${shorten(item.sender, 10)} -> ${shorten(item.recipient, 10)}`}</span>
                         <span>${formatBalanceDelta(item)}</span>
                       </div>
                     </div>
-                    <span class="transaction-toggle-label">${expanded ? "Hide" : "Details"}</span>
+                    <span class="transaction-toggle-label">${expanded ? t("hide") : t("details")}</span>
                   </button>
                   <div class="transaction-details ${expanded ? "" : "hidden"}">
                     <div class="transaction-detail-grid">
-                      <div><span class="label">Transaction ID</span><strong class="mono">${shorten(item.tx_id, 12)}</strong></div>
-                      <div><span class="label">Type</span><strong>${item.type || "payment"}</strong></div>
-                      <div><span class="label">From</span><strong class="mono">${shorten(item.sender, 12)}</strong></div>
-                      <div><span class="label">To</span><strong class="mono">${shorten(item.recipient, 12)}</strong></div>
-                      <div><span class="label">Balance Before</span><strong>${item.balance_before == null ? "Unavailable" : formatEdu(item.balance_before)}</strong></div>
-                      <div><span class="label">Balance After</span><strong>${item.balance_after == null ? "Unavailable" : formatEdu(item.balance_after)}</strong></div>
+                      <div><span class="label">${t("transactionId")}</span><strong class="mono">${shorten(item.tx_id, 12)}</strong></div>
+                      <div><span class="label">${t("type")}</span><strong>${item.type || "payment"}</strong></div>
+                      <div><span class="label">${t("from")}</span><strong class="mono">${shorten(item.sender, 12)}</strong></div>
+                      <div><span class="label">${t("to")}</span><strong class="mono">${shorten(item.recipient, 12)}</strong></div>
+                      <div><span class="label">${t("balanceBefore")}</span><strong>${item.balance_before == null ? t("unavailable") : formatEdu(item.balance_before)}</strong></div>
+                      <div><span class="label">${t("balanceAfter")}</span><strong>${item.balance_after == null ? t("unavailable") : formatEdu(item.balance_after)}</strong></div>
                     </div>
                   </div>
                 </article>
               `;
             }).join("")
-          : `<div class="history-item"><strong>No transactions yet.</strong><span class="muted">Your activity will appear here after receiving or sending tokens.</span></div>`;
+          : `<div class="history-item"><strong>${t("noTransactions")}</strong><span class="muted">${t("activityWillAppear")}</span></div>`;
         const allExpanded = enriched.length > 0 && enriched.every((item) => state.expandedTransactions[item.tx_id]);
-        document.getElementById("transactions-toggle-all").textContent = allExpanded ? "Collapse all" : "Expand all";
+        document.getElementById("transactions-toggle-all").textContent = allExpanded ? t("collapseAll") : t("expandAll");
       }
 
       function maskedPaymentLabel(purchase) {
@@ -1259,12 +2104,12 @@
 
       function renderAdminDashboard() {
         setText("admin-pending-count", state.adminQueue.length);
-        setText("admin-network-summary", `${state.networkOverview?.node_count || 0} nodes`);
-        setBadge("admin-queue-count", `${state.adminQueue.length} pending`, state.adminQueue.length ? "pending_review" : "verified");
+        setText("admin-network-summary", `${state.networkOverview?.node_count || 0} ${t("nodes")}`);
+        setBadge("admin-queue-count", t("pendingCount", { count: state.adminQueue.length }), state.adminQueue.length ? "pending_review" : "verified");
         document.getElementById("admin-overview-list").innerHTML = `
-          <div class="history-item"><strong>Pending KYC reviews</strong><span class="muted">${state.adminQueue.length} requests need action.</span></div>
-          <div class="history-item"><strong>Total users</strong><span class="muted">${state.adminUsers.length} users currently match the selected filters.</span></div>
-          <div class="history-item"><strong>Verified users</strong><span class="muted">${document.getElementById("admin-verified-users").textContent} users can send funds.</span></div>
+          <div class="history-item"><strong>${t("pendingKycReviews")}</strong><span class="muted">${t("pendingRequestsNeedAction", { count: state.adminQueue.length })}</span></div>
+          <div class="history-item"><strong>${t("totalUsers")}</strong><span class="muted">${t("usersMatchFilters", { count: state.adminUsers.length })}</span></div>
+          <div class="history-item"><strong>${t("verifiedUsers")}</strong><span class="muted">${t("usersCanSendFunds", { count: document.getElementById("admin-verified-users").textContent })}</span></div>
         `;
         renderAdminQueue();
         renderUsersTable();
@@ -1276,23 +2121,23 @@
       function renderAdminQueue() {
         const list = document.getElementById("review-list");
         if (!state.adminQueue.length) {
-          list.innerHTML = `<div class="history-item"><strong>No pending reviews.</strong><span class="muted">All KYC requests are up to date.</span></div>`;
+          list.innerHTML = `<div class="history-item"><strong>${t("noPendingReviews")}</strong><span class="muted">${t("allKycRequestsUpToDate")}</span></div>`;
           return;
         }
         list.innerHTML = state.adminQueue.map((item) => `
           <form class="review-card" data-submission-id="${item.submission_id}">
             <div class="review-head">
               <strong>${item.name}</strong>
-              ${badge(item.status.replaceAll("_", " "), item.status)}
+              ${badge(formatKycStatus(item.status), item.status)}
             </div>
             <span>${item.email} • ${shorten(item.wallet_address || item.user_id, 10)}</span>
-            <span class="muted">${item.document_type.replaceAll("_", " ")} • submitted ${formatDate(item.submitted_at)}</span>
-            <textarea rows="3" placeholder="Reason if denying or requesting resubmission">${state.reviewDrafts[item.submission_id] || ""}</textarea>
+            <span class="muted">${item.document_type.replaceAll("_", " ")} • ${t("submittedAt", { date: formatDate(item.submitted_at) })}</span>
+            <textarea rows="3" placeholder="${t("denyReasonPlaceholder")}">${state.reviewDrafts[item.submission_id] || ""}</textarea>
             <div class="inline-actions">
-              <button type="button" data-review-action="approve">Approve</button>
-              <button type="button" class="secondary" data-review-action="deny">Deny</button>
-              <button type="button" class="secondary" data-review-action="reset">Request resubmission</button>
-              <button type="button" class="secondary" data-open-user="${item.user_id}">View user</button>
+              <button type="button" data-review-action="approve">${t("approveKyc")}</button>
+              <button type="button" class="secondary" data-review-action="deny">${t("denyKyc")}</button>
+              <button type="button" class="secondary" data-review-action="reset">${t("requestResubmission")}</button>
+              <button type="button" class="secondary" data-open-user="${item.user_id}">${t("viewUser")}</button>
             </div>
           </form>
         `).join("");
@@ -1312,12 +2157,12 @@
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td class="mono">${shorten(user.wallet_address, 10)}</td>
-            <td>${badge(user.role, user.role)}</td>
-            <td>${badge(user.kyc_status.replaceAll("_", " "), user.kyc_status)}</td>
-            <td>${badge(user.account_status, user.account_status)}</td>
+            <td>${badge(translateRole(user.role), user.role)}</td>
+            <td>${badge(formatKycStatus(user.kyc_status), user.kyc_status)}</td>
+            <td>${badge(formatUserStatus(user.account_status), user.account_status)}</td>
             <td>${formatDate(user.created_at)}</td>
             <td>${formatDate(user.last_activity)}</td>
-            <td><button type="button" class="secondary small-button" data-open-user="${user.user_id}">View</button></td>
+            <td><button type="button" class="secondary small-button" data-open-user="${user.user_id}">${t("viewUser")}</button></td>
           </tr>
         `).join("");
       }
@@ -1325,7 +2170,7 @@
       function renderAdminActivity() {
         document.getElementById("admin-activity-feed").innerHTML = state.adminActivity.length
           ? state.adminActivity.map((event) => `<div class="history-item"><strong>${event.message}</strong><span class="muted">${formatDate(event.timestamp)}</span></div>`).join("")
-          : `<div class="history-item"><strong>No recent activity.</strong><span class="muted">Admin events will appear here.</span></div>`;
+          : `<div class="history-item"><strong>${t("noRecentActivity")}</strong><span class="muted">${t("adminEventsWillAppear")}</span></div>`;
       }
 
       function updateAdminActivityLimit() {
@@ -1352,7 +2197,7 @@
       function renderNetwork(nodeTargetId, activityTargetId, chainTargetId) {
         const overview = state.networkOverview;
         if (!overview) return;
-        setText(chainTargetId, `Height ${overview.latest_chain_height}`);
+        setText(chainTargetId, t("heightLabel", { height: overview.latest_chain_height }));
         document.getElementById(nodeTargetId).innerHTML = overview.nodes.map((node) => `
           <li><span>${node.node_id}</span><strong>${node.role || node.status}</strong></li>
         `).join("");
@@ -1361,23 +2206,23 @@
             <span>${item.node_id}: ${item.message}</span>
             <strong>${item.timestamp}</strong>
           </div>
-        `).join("") || `<div class="history-item"><strong>No network activity yet.</strong><span class="muted">Recent blockchain events will appear here.</span></div>`;
+        `).join("") || `<div class="history-item"><strong>${t("noNetworkActivity")}</strong><span class="muted">${t("blockchainEventsWillAppear")}</span></div>`;
       }
 
       async function openUserDrawer(userId) {
         const data = await fetchJson(`/users/${userId}`, { headers: authHeaders() });
         state.selectedUser = data.user;
         document.getElementById("drawer-user-summary").innerHTML = `
-          <div><span class="label">Name</span><strong>${data.user.name}</strong></div>
-          <div><span class="label">Email</span><strong>${data.user.email}</strong></div>
-          <div><span class="label">Wallet</span><strong class="mono">${shorten(data.user.wallet_address, 12)}</strong></div>
+          <div><span class="label">${t("name")}</span><strong>${data.user.name}</strong></div>
+          <div><span class="label">${t("email")}</span><strong>${data.user.email}</strong></div>
+          <div><span class="label">${t("wallet")}</span><strong class="mono">${shorten(data.user.wallet_address, 12)}</strong></div>
           <div><span class="label">KYC</span><strong>${badge(formatKycStatus(data.user.kyc_status), normalizeKycStatus(data.user.kyc_status))}</strong></div>
-          <div><span class="label">Account</span><strong>${badge(formatUserStatus(data.user.account_status), normalizeUserStatus(data.user.account_status))}</strong></div>
+          <div><span class="label">${t("account")}</span><strong>${badge(formatUserStatus(data.user.account_status), normalizeUserStatus(data.user.account_status))}</strong></div>
         `;
         renderDrawerActions(data.user);
         document.getElementById("drawer-kyc-history").innerHTML = data.user.kyc_submissions.length
-          ? data.user.kyc_submissions.map((submission) => `<div class="history-item"><strong>${submission.status}</strong><span class="muted">${formatDate(submission.submitted_at)} • ${submission.review_note || submission.note || "No note"}</span></div>`).join("")
-          : `<div class="history-item"><strong>No KYC submissions found.</strong><span class="muted">This user has not submitted KYC yet.</span></div>`;
+          ? data.user.kyc_submissions.map((submission) => `<div class="history-item"><strong>${formatKycStatus(submission.status)}</strong><span class="muted">${formatDate(submission.submitted_at)} • ${submission.review_note || submission.note || t("noNote")}</span></div>`).join("")
+          : `<div class="history-item"><strong>${t("noKycSubmissions")}</strong><span class="muted">${t("userHasNoKyc")}</span></div>`;
         document.getElementById("user-drawer").classList.remove("hidden");
       }
 
@@ -1406,7 +2251,7 @@
         if (!sourceUser) return;
         const note = document.getElementById("drawer-note").value.trim();
         if (requireAdminNote(action) && !note) {
-          showToast("Add an admin note before using this action.", "error");
+          showToast(t("addAdminNote"), "error");
           return;
         }
         const copy = confirmCopy(action, sourceUser);
@@ -1461,9 +2306,9 @@
           if (state.selectedUser?.user_id === sourceUser.user_id) {
             await openUserDrawer(sourceUser.user_id);
           }
-          showToast("Action completed successfully.");
+          showToast(t("actionCompleted"));
         } catch (error) {
-          showToast(error.message || "Action failed.", "error");
+          showToast(error.message || t("actionFailed"), "error");
         } finally {
           setActionPending(false);
         }
@@ -1506,7 +2351,7 @@
             }),
           });
           setAuthMode("signin");
-          setFeedback("Account created. Sign in with your new credentials.", "success");
+          setFeedback(t("accountCreated"), "success");
         } catch (error) {
           setFeedback(authMessageFromError(error), "error");
         }
@@ -1534,16 +2379,16 @@
         const recipient = document.getElementById("recipient-wallet-input").value.trim();
         const amount = Number(document.getElementById("amount-input").value);
         if (!recipient) {
-          showToast("Enter a recipient wallet address.", "error");
+          showToast(t("enterRecipientWallet"), "error");
           return;
         }
         if (!amount || amount <= 0) {
-          showToast("Enter a valid amount.", "error");
+          showToast(t("enterValidAmount"), "error");
           return;
         }
         const confirmed = await showConfirmModal(
-          "Confirm transfer",
-          `Are you sure you want to send ${amount} EDU from ${shorten(sender, 8)} to ${shorten(recipient, 8)}?`
+          t("confirmTransfer"),
+          t("confirmTransferMessage", { amount: amount, from: shorten(sender, 8), to: shorten(recipient, 8) })
         );
         if (!confirmed) return;
         try {
@@ -1572,9 +2417,9 @@
           ];
           document.getElementById("recipient-wallet-input").value = "";
           await refreshAuthenticatedViews();
-          showToast("Transfer completed successfully.");
+          showToast(t("transferCompleted"));
         } catch (error) {
-          showToast("Transfer failed. Check the recipient wallet and try again.", "error");
+          showToast(t("transferFailed"), "error");
         } finally {
           document.getElementById("send-button").disabled = false;
         }
@@ -1635,23 +2480,23 @@
       function missingPurchaseFields(payment) {
         if (payment.payment_method_type === "card") {
           const fields = [
-            ["cardholder_name", "Cardholder name"],
-            ["card_number", "Card number"],
-            ["expiry_month", "Expiry month"],
-            ["expiry_year", "Expiry year"],
-            ["cvv", "CVV"],
-            ["billing_zip", "Billing ZIP"],
+            ["cardholder_name", t("cardholderName")],
+            ["card_number", t("cardNumber")],
+            ["expiry_month", t("expiryMonth")],
+            ["expiry_year", t("expiryYear")],
+            ["cvv", t("cvv")],
+            ["billing_zip", t("billingZip")],
           ];
           return fields
             .filter(([key]) => !payment.payment_details[key])
             .map(([, label]) => label);
         }
         const fields = [
-          ["account_holder_name", "Account holder name"],
-          ["bank_name", "Bank name"],
-          ["routing_number", "Routing number"],
-          ["account_number", "Account number"],
-          ["account_type", "Account type"],
+          ["account_holder_name", t("accountHolderName")],
+          ["bank_name", t("bankName")],
+          ["routing_number", t("routingNumber")],
+          ["account_number", t("accountNumber")],
+          ["account_type", t("accountType")],
         ];
         return fields
           .filter(([key]) => !payment.payment_details[key])
@@ -1663,22 +2508,22 @@
         const wallet = state.ownerWallets[0];
         const amountUsd = Number(document.getElementById("purchase-amount-input").value);
         if (!wallet) {
-          showToast("No wallet found for this user.", "error");
+          showToast(t("noWalletForUser"), "error");
           return;
         }
         if (!amountUsd || amountUsd <= 0) {
-          showToast("Enter a valid USD amount.", "error");
+          showToast(t("enterValidAmount"), "error");
           return;
         }
         const payment = purchasePayload();
         const missingFields = missingPurchaseFields(payment);
         if (missingFields.length) {
-          showToast(`Complete required fields: ${missingFields.join(", ")}.`, "error");
+          showToast(t("completeRequiredFields", { fields: missingFields.join(", ") }), "error");
           return;
         }
         const confirmed = await showConfirmModal(
-          "Confirm purchase",
-          `Are you sure you want to buy ${amountUsd} EDU for ${amountUsd} USD using ${payment.payment_method_type === "card" ? "a credit card" : "a bank account"}?`
+          t("confirmPurchase"),
+          t("confirmPurchaseMessage", { amount: amountUsd, method: payment.payment_method_type === "card" ? t("cardMethod") : t("bankMethod") })
         );
         if (!confirmed) return;
         try {
@@ -1695,9 +2540,9 @@
           });
           await refreshAuthenticatedViews();
           const fundedAmount = result.purchase?.edu_amount || amountUsd;
-          showToast(`Funds added successfully: ${fundedAmount} EDU credited.`);
+          showToast(t("fundsAdded", { amount: fundedAmount }));
         } catch (error) {
-          showToast(error.message || "Purchase failed.", "error");
+          showToast(error.message || t("purchaseFailed"), "error");
         } finally {
           document.getElementById("purchase-button").disabled = false;
         }
@@ -1708,7 +2553,7 @@
         if (!target) return;
         const mappedAction = { approve: "approve_kyc", deny: "deny_kyc", reset: "force_kyc_again" }[action];
         if (requireAdminNote(mappedAction) && !note) {
-          showToast("Add a note before using this action.", "error");
+          showToast(t("addAdminNote"), "error");
           return;
         }
         const copy = confirmCopy(mappedAction, {
@@ -1735,9 +2580,9 @@
           }
           delete state.reviewDrafts[submissionId];
           await refreshAuthenticatedViews();
-          showToast("Review updated successfully.");
+          showToast(t("reviewUpdated"));
         } catch (error) {
-          showToast(error.message || "Review update failed.", "error");
+          showToast(error.message || t("reviewUpdateFailed"), "error");
         } finally {
           setActionPending(false);
         }
@@ -1859,11 +2704,19 @@
       document.getElementById("admin-network-refresh").addEventListener("click", refreshAuthenticatedViews);
       document.getElementById("admin-activity-limit").addEventListener("change", updateAdminActivityLimit);
       document.getElementById("admin-activity-limit-custom").addEventListener("change", updateAdminActivityLimit);
+      document.getElementById("language-toggle").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-language]");
+        if (!button) return;
+        setLanguage(button.dataset.language);
+      });
 
+      document.documentElement.lang = state.language;
+      applyStaticTranslations();
       setAuthMode("signin");
       setPurchaseMethod(currentPurchaseMethod());
       syncAdminActivityLimitControl();
       setLayoutForRole();
+      setLanguage(state.language, false);
       loadCurrentUser().then((user) => {
         if (user) refreshAuthenticatedViews();
       });
