@@ -8,7 +8,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
 ![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-E6522C?logo=prometheus&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)
 ![Status](https://img.shields.io/badge/Status-Educational-blueviolet)
 
 </div>
@@ -206,7 +206,7 @@ The topology includes a **bootstrap node** (node-1) that mines blocks, and two *
 
 ## License
 
-This project is for **educational purposes only**. MIT License.
+This project is for **educational purposes only**. All Rights Reserved © 2026 Fernando Zuniga. See [LICENSE](LICENSE) for details.
 
 ---
 
