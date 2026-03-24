@@ -162,7 +162,14 @@ class NodeState:
         }
         for block in self.chain[1:]:
             for tx in block.get("transactions", []):
-                if tx.get("type", "payment") != "payment":
+                tx_type = tx.get("type", "payment")
+                if tx_type == "funding":
+                    recipient = tx.get("recipient")
+                    amount = tx.get("amount", 0)
+                    if recipient in balances:
+                        balances[recipient] += amount
+                    continue
+                if tx_type != "payment":
                     continue
                 sender = tx.get("sender")
                 recipient = tx.get("recipient")
@@ -242,6 +249,8 @@ class NodeState:
                 return False, "invalid amount"
             if amount <= 0:
                 return False, "invalid amount"
+            if transaction["recipient"] not in self.wallet_registry:
+                return False, "unknown recipient"
             balances = self.balances_snapshot()
             if balances.get(transaction["sender"], 0) < amount:
                 return False, "insufficient balance"
@@ -272,6 +281,52 @@ class NodeState:
             for tx in self.mempool:
                 if tx.get("type") == "kyc_anchor" and tx.get("submission_id") == transaction["submission_id"]:
                     return False, "duplicate kyc anchor"
+            return True, None
+
+        if tx_type == "funding":
+            required = [
+                "tx_id",
+                "type",
+                "purchase_id",
+                "recipient",
+                "amount",
+                "amount_usd",
+                "currency",
+                "payment_method_type",
+                "source",
+            ]
+            if any(field not in transaction for field in required):
+                return False, "missing fields"
+            expected_tx_id = stable_hash(
+                {
+                    "type": "funding",
+                    "purchase_id": transaction["purchase_id"],
+                    "recipient": transaction["recipient"],
+                    "amount": transaction["amount"],
+                    "amount_usd": transaction["amount_usd"],
+                    "currency": transaction["currency"],
+                    "payment_method_type": transaction["payment_method_type"],
+                    "source": transaction["source"],
+                }
+            )
+            if transaction["tx_id"] != expected_tx_id:
+                return False, "tx_id mismatch"
+            try:
+                amount = int(transaction["amount"])
+                amount_usd = int(transaction["amount_usd"])
+            except (TypeError, ValueError):
+                return False, "invalid amount"
+            if amount <= 0 or amount_usd <= 0:
+                return False, "invalid amount"
+            if transaction["recipient"] not in self.wallet_registry:
+                return False, "unknown recipient"
+            for block in self.chain[1:]:
+                for tx in block.get("transactions", []):
+                    if tx.get("type") == "funding" and tx.get("purchase_id") == transaction["purchase_id"]:
+                        return False, "duplicate purchase"
+            for tx in self.mempool:
+                if tx.get("type") == "funding" and tx.get("purchase_id") == transaction["purchase_id"]:
+                    return False, "duplicate purchase"
             return True, None
 
         return False, "unsupported transaction type"

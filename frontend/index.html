@@ -203,28 +203,111 @@
           </section>
 
           <section class="tab-panel hidden" id="user-tab-transactions">
-            <article class="card">
-              <div class="section-head">
-                <h2>Send Funds</h2>
-                <span class="pill" id="send-status">Locked</span>
-              </div>
-              <p class="muted" id="send-caption">Sending unlocks after KYC approval.</p>
-              <form id="send-form" class="send-form">
-                <label>
-                  <span>From</span>
-                  <select id="sender-select"></select>
-                </label>
-                <label>
-                  <span>Recipient Wallet</span>
-                  <input id="recipient-wallet-input" type="text" placeholder="Enter wallet address">
-                </label>
-                <label>
-                  <span>Amount</span>
-                  <input id="amount-input" type="number" min="1" step="1" value="10">
-                </label>
-                <button type="submit" id="send-button">Send</button>
-              </form>
-            </article>
+            <div class="content-grid two-column">
+              <article class="card">
+                <div class="section-head">
+                  <h2>Send Funds</h2>
+                  <span class="pill" id="send-status">Locked</span>
+                </div>
+                <p class="muted" id="send-caption">Sending unlocks after KYC approval.</p>
+                <form id="send-form" class="send-form">
+                  <label>
+                    <span>From</span>
+                    <select id="sender-select"></select>
+                  </label>
+                  <label>
+                    <span>Recipient Wallet</span>
+                    <input id="recipient-wallet-input" type="text" placeholder="Enter wallet address">
+                  </label>
+                  <label>
+                    <span>Amount</span>
+                    <input id="amount-input" type="number" min="1" step="1" value="10">
+                  </label>
+                  <button type="submit" id="send-button">Send</button>
+                </form>
+              </article>
+              <article class="card">
+                <div class="section-head">
+                  <h2>Buy EDU</h2>
+                  <span class="pill" id="purchase-status">Locked</span>
+                </div>
+                <p class="muted" id="purchase-caption">Buying unlocks after KYC approval. Demo rate: 1 USD = 1 EDU.</p>
+                <form id="purchase-form" class="stack-form">
+                  <label>
+                    <span>Amount in USD</span>
+                    <input id="purchase-amount-input" type="number" min="1" step="1" value="50">
+                  </label>
+                  <label>
+                    <span>Payment Method</span>
+                    <select id="purchase-method-select">
+                      <option value="card">Credit Card</option>
+                      <option value="bank_account">Bank Account</option>
+                    </select>
+                  </label>
+                  <div class="inline-actions">
+                    <button type="button" class="secondary" id="purchase-fake-data">Generate fake data</button>
+                  </div>
+                  <div id="purchase-card-fields" class="stack-form">
+                    <label>
+                      <span>Cardholder Name</span>
+                      <input id="cardholder-name-input" type="text" placeholder="Jordan Smith">
+                    </label>
+                    <label>
+                      <span>Card Number</span>
+                      <input id="card-number-input" type="text" inputmode="numeric" placeholder="4111111111111111">
+                    </label>
+                    <div class="form-split">
+                      <label>
+                        <span>Expiry Month</span>
+                        <input id="card-expiry-month-input" type="text" inputmode="numeric" placeholder="08">
+                      </label>
+                      <label>
+                        <span>Expiry Year</span>
+                        <input id="card-expiry-year-input" type="text" inputmode="numeric" placeholder="2029">
+                      </label>
+                    </div>
+                    <div class="form-split">
+                      <label>
+                        <span>CVV</span>
+                        <input id="card-cvv-input" type="text" inputmode="numeric" placeholder="123">
+                      </label>
+                      <label>
+                        <span>Billing ZIP</span>
+                        <input id="card-billing-zip-input" type="text" inputmode="numeric" placeholder="10001">
+                      </label>
+                    </div>
+                  </div>
+                  <div id="purchase-bank-fields" class="stack-form hidden">
+                    <label>
+                      <span>Account Holder Name</span>
+                      <input id="bank-holder-name-input" type="text" placeholder="Jordan Smith">
+                    </label>
+                    <label>
+                      <span>Bank Name</span>
+                      <input id="bank-name-input" type="text" placeholder="Educational Bank">
+                    </label>
+                    <div class="form-split">
+                      <label>
+                        <span>Routing Number</span>
+                        <input id="bank-routing-input" type="text" inputmode="numeric" placeholder="021000021">
+                      </label>
+                      <label>
+                        <span>Account Number</span>
+                        <input id="bank-account-input" type="text" inputmode="numeric" placeholder="000123456789">
+                      </label>
+                    </div>
+                    <label>
+                      <span>Account Type</span>
+                      <select id="bank-account-type-input">
+                        <option value="checking">Checking</option>
+                        <option value="savings">Savings</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button type="submit" id="purchase-button">Buy EDU</button>
+                </form>
+              </article>
+            </div>
             <article class="card">
               <div class="section-head">
                 <h2>All Transactions</h2>
@@ -232,7 +315,9 @@
                   <button type="button" class="secondary filter is-active" data-user-history="all">All</button>
                   <button type="button" class="secondary filter" data-user-history="outbound">Sent</button>
                   <button type="button" class="secondary filter" data-user-history="inbound">Received</button>
+                  <button type="button" class="secondary filter" data-user-history="funding">Purchased</button>
                 </div>
+                <button type="button" class="secondary" id="transactions-toggle-all">Expand all</button>
               </div>
               <div class="history-list" id="transaction-history-full"></div>
             </article>
@@ -511,6 +596,7 @@
         authMode: "signin",
         ownerWallets: [],
         contactWallets: [],
+        purchases: [],
         reviewDrafts: {},
         userTab: window.sessionStorage.getItem("userActiveTab") || "overview",
         adminTab: window.sessionStorage.getItem("adminActiveTab") || "overview",
@@ -521,6 +607,8 @@
         selectedUser: null,
         networkOverview: null,
         pendingTransactions: [],
+        userTransactions: [],
+        expandedTransactions: {},
         adminActivityLimit: Number(window.sessionStorage.getItem("adminActivityLimit") || 20),
         usersLoading: false,
         networkLoading: false,
@@ -592,6 +680,43 @@
         ["name-input", "email-input", "password-input"].forEach((id) => {
           document.getElementById(id).value = "";
         });
+      }
+
+      function currentPurchaseMethod() {
+        return document.getElementById("purchase-method-select").value;
+      }
+
+      function clearCardFields() {
+        [
+          "cardholder-name-input",
+          "card-number-input",
+          "card-expiry-month-input",
+          "card-expiry-year-input",
+          "card-cvv-input",
+          "card-billing-zip-input",
+        ].forEach((id) => {
+          document.getElementById(id).value = "";
+        });
+      }
+
+      function clearBankFields() {
+        [
+          "bank-holder-name-input",
+          "bank-name-input",
+          "bank-routing-input",
+          "bank-account-input",
+        ].forEach((id) => {
+          document.getElementById(id).value = "";
+        });
+        document.getElementById("bank-account-type-input").value = "checking";
+      }
+
+      function setPurchaseMethod(method) {
+        const isCard = method === "card";
+        if (isCard) clearBankFields();
+        else clearCardFields();
+        document.getElementById("purchase-card-fields").classList.toggle("hidden", !isCard);
+        document.getElementById("purchase-bank-fields").classList.toggle("hidden", isCard);
       }
 
       function normalizeKycStatus(status) {
@@ -863,7 +988,29 @@
         const confirmed = data.transactions || [];
         const confirmedIds = new Set(confirmed.map((tx) => tx.tx_id));
         state.pendingTransactions = state.pendingTransactions.filter((tx) => !confirmedIds.has(tx.tx_id));
-        return [...state.pendingTransactions, ...confirmed];
+        const pendingPurchases = (state.purchases || [])
+          .filter((purchase) => purchase.blockchain_tx_id && !confirmedIds.has(purchase.blockchain_tx_id))
+          .map((purchase) => ({
+            tx_id: purchase.blockchain_tx_id,
+            timestamp: purchase.created_at,
+            sender: "fiat-onramp",
+            recipient: purchase.wallet_address,
+            amount: purchase.edu_amount,
+            direction: "funding",
+            status: "pending",
+            type: "funding",
+          }));
+        const merged = [...state.pendingTransactions, ...pendingPurchases, ...confirmed];
+        merged.sort((a, b) => new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime());
+        return merged;
+      }
+
+      async function loadPurchases() {
+        if (!state.currentUser || state.currentUser.role !== "user") return;
+        const data = await fetchJson(`/purchases/by-owner?owner_user_id=${encodeURIComponent(state.currentUser.user_id)}`, {
+          headers: authHeaders(),
+        });
+        state.purchases = data.purchases || [];
       }
 
       async function loadReviewQueue() {
@@ -925,9 +1072,15 @@
         setText("wallet-caption", `${shorten(user.wallet_address, 10)} • ${primaryWallet?.type || "wallet"} wallet`);
         setBadge("transfer-capability", canTransfer ? "Send + receive" : "Receive only", canTransfer ? "verified" : user.kyc_status);
         setBadge("send-status", canTransfer ? "Ready" : "Locked", canTransfer ? "verified" : user.kyc_status);
+        setBadge("purchase-status", canTransfer ? "Ready" : "Locked", canTransfer ? "verified" : user.kyc_status);
         setBadge("kyc-status", user.kyc_status.replaceAll("_", " "), user.kyc_status);
         setText("send-caption", canTransfer ? "KYC approved. Sending is enabled." : "KYC approval is required before sending.");
+        setText("purchase-caption", canTransfer ? "KYC approved. Buy simulated EDU at a fixed 1 USD = 1 EDU rate." : "KYC approval is required before buying educational funds.");
         document.getElementById("send-button").disabled = !canTransfer;
+        document.getElementById("purchase-button").disabled = !canTransfer;
+        document.getElementById("purchase-fake-data").disabled = !canTransfer;
+        document.getElementById("purchase-method-select").disabled = !canTransfer;
+        document.getElementById("purchase-amount-input").disabled = !canTransfer;
         const kycLocked = user.kyc_status === "verified";
         document.getElementById("kyc-submit-button").disabled = kycLocked || user.kyc_status === "pending_review";
         document.getElementById("document-type").disabled = kycLocked;
@@ -939,9 +1092,10 @@
           ? state.ownerWallets.map((wallet) => `<div class="wallet-row"><span>${shorten(wallet.address, 10)}</span><strong>${Number(wallet.balance || 0).toLocaleString()} EDU</strong></div>`).join("")
           : `<div class="history-item"><strong>No wallet found.</strong><span class="muted">Your wallet will appear here.</span></div>`;
         document.getElementById("overview-alerts").innerHTML = buildUserAlerts(user);
+        state.userTransactions = transactions;
         renderKycHistory(user);
         renderTransactionHistory("transaction-history", transactions.slice(0, 5));
-        renderTransactionHistory("transaction-history-full", filterTransactions(transactions));
+        renderDetailedTransactionHistory(filterTransactions(transactions), primaryWallet?.balance || 0);
         syncTransactionFilterButtons();
         document.getElementById("user-total-transactions").textContent = transactions.length;
         document.getElementById("user-last-activity").textContent = transactions[0] ? formatDate(transactions[0].timestamp) : "None";
@@ -987,16 +1141,106 @@
         return transactions.filter((tx) => tx.direction === state.userHistoryFilter);
       }
 
+      function transactionDirectionMeta(item) {
+        if (item.direction === "outbound") return { label: "Sent", tone: "danger", sign: "-" };
+        if (item.direction === "funding") return { label: "Purchased", tone: "success", sign: "+" };
+        return { label: "Received", tone: "success", sign: "+" };
+      }
+
+      function formatEdu(value) {
+        return `${Number(value || 0).toLocaleString()} EDU`;
+      }
+
+      function formatBalanceDelta(item) {
+        const meta = transactionDirectionMeta(item);
+        return `${meta.sign}${Number(item.amount || 0).toLocaleString()} EDU`;
+      }
+
+      function withBalanceSnapshots(items, currentBalance) {
+        let runningAfter = Number(currentBalance || 0);
+        return items.map((item) => {
+          if (item.status === "pending") {
+            return { ...item, balance_before: null, balance_after: null };
+          }
+          const amount = Number(item.amount || 0);
+          const balanceAfter = runningAfter;
+          let balanceBefore = runningAfter;
+          if (item.direction === "outbound") {
+            balanceBefore = balanceAfter + amount;
+          } else if (item.direction === "inbound" || item.direction === "funding") {
+            balanceBefore = balanceAfter - amount;
+          }
+          runningAfter = balanceBefore;
+          return {
+            ...item,
+            balance_before: balanceBefore,
+            balance_after: balanceAfter,
+          };
+        });
+      }
+
       function renderTransactionHistory(targetId, items) {
         document.getElementById(targetId).innerHTML = items.length
           ? items.map((item) => `
               <div class="history-item">
-                <strong>${item.direction === "outbound" ? "Sent" : "Received"} ${item.amount} EDU</strong>
+                <strong>${item.direction === "outbound" ? "Sent" : item.direction === "funding" ? "Purchased" : "Received"} ${item.amount} EDU</strong>
                 <span>${formatDate(item.timestamp)}</span>
-                <span class="muted">${shorten(item.sender, 8)} → ${shorten(item.recipient, 8)}</span>
+                <span class="muted">${item.direction === "funding" ? `Demo funding into ${shorten(item.recipient, 8)}` : `${shorten(item.sender, 8)} → ${shorten(item.recipient, 8)}`}</span>
               </div>
             `).join("")
           : `<div class="history-item"><strong>No transactions yet.</strong><span class="muted">Your activity will appear here after receiving or sending tokens.</span></div>`;
+      }
+
+      function renderDetailedTransactionHistory(items, currentBalance) {
+        const target = document.getElementById("transaction-history-full");
+        const enriched = withBalanceSnapshots(items, currentBalance);
+        target.innerHTML = enriched.length
+          ? enriched.map((item) => {
+              const meta = transactionDirectionMeta(item);
+              const expanded = !!state.expandedTransactions[item.tx_id];
+              return `
+                <article class="transaction-row ${expanded ? "is-expanded" : ""}">
+                  <button type="button" class="transaction-summary" data-tx-toggle="${item.tx_id}" aria-expanded="${expanded}">
+                    <div class="transaction-main">
+                      <div class="transaction-title-row">
+                        <strong>${meta.label} ${formatEdu(item.amount)}</strong>
+                        <span class="pill ${meta.tone}">${meta.label}</span>
+                        <span class="pill ${item.status === "pending" ? "warning" : "success"}">${item.status}</span>
+                      </div>
+                      <div class="transaction-meta-row">
+                        <span>${formatDate(item.timestamp)}</span>
+                        <span>${item.direction === "funding" ? "Fiat on-ramp" : `${shorten(item.sender, 10)} -> ${shorten(item.recipient, 10)}`}</span>
+                        <span>${formatBalanceDelta(item)}</span>
+                      </div>
+                    </div>
+                    <span class="transaction-toggle-label">${expanded ? "Hide" : "Details"}</span>
+                  </button>
+                  <div class="transaction-details ${expanded ? "" : "hidden"}">
+                    <div class="transaction-detail-grid">
+                      <div><span class="label">Transaction ID</span><strong class="mono">${shorten(item.tx_id, 12)}</strong></div>
+                      <div><span class="label">Type</span><strong>${item.type || "payment"}</strong></div>
+                      <div><span class="label">From</span><strong class="mono">${shorten(item.sender, 12)}</strong></div>
+                      <div><span class="label">To</span><strong class="mono">${shorten(item.recipient, 12)}</strong></div>
+                      <div><span class="label">Balance Before</span><strong>${item.balance_before == null ? "Unavailable" : formatEdu(item.balance_before)}</strong></div>
+                      <div><span class="label">Balance After</span><strong>${item.balance_after == null ? "Unavailable" : formatEdu(item.balance_after)}</strong></div>
+                    </div>
+                  </div>
+                </article>
+              `;
+            }).join("")
+          : `<div class="history-item"><strong>No transactions yet.</strong><span class="muted">Your activity will appear here after receiving or sending tokens.</span></div>`;
+        const allExpanded = enriched.length > 0 && enriched.every((item) => state.expandedTransactions[item.tx_id]);
+        document.getElementById("transactions-toggle-all").textContent = allExpanded ? "Collapse all" : "Expand all";
+      }
+
+      function maskedPaymentLabel(purchase) {
+        const payload = purchase.payment_payload || {};
+        if (purchase.payment_method_type === "card") {
+          const digits = String(payload.card_number || "").slice(-4) || "0000";
+          return `Card ending ${digits}`;
+        }
+        const digits = String(payload.account_number || "").slice(-4) || "0000";
+        return `Bank account ending ${digits}`;
       }
 
       function syncTransactionFilterButtons() {
@@ -1336,6 +1580,129 @@
         }
       }
 
+      function fakeDigits(length) {
+        let value = "";
+        while (value.length < length) {
+          value += String(Math.floor(Math.random() * 10));
+        }
+        return value.slice(0, length);
+      }
+
+      function fillFakePaymentData() {
+        if (currentPurchaseMethod() === "card") {
+          document.getElementById("cardholder-name-input").value = "Jordan Example";
+          document.getElementById("card-number-input").value = `411111111111${fakeDigits(4)}`;
+          document.getElementById("card-expiry-month-input").value = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
+          document.getElementById("card-expiry-year-input").value = String(new Date().getFullYear() + 3);
+          document.getElementById("card-cvv-input").value = fakeDigits(3);
+          document.getElementById("card-billing-zip-input").value = fakeDigits(5);
+          return;
+        }
+        document.getElementById("bank-holder-name-input").value = "Jordan Example";
+        document.getElementById("bank-name-input").value = "Educational Bank";
+        document.getElementById("bank-routing-input").value = fakeDigits(9);
+        document.getElementById("bank-account-input").value = fakeDigits(12);
+        document.getElementById("bank-account-type-input").value = Math.random() > 0.5 ? "checking" : "savings";
+      }
+
+      function purchasePayload() {
+        const method = currentPurchaseMethod();
+        if (method === "card") {
+          return {
+            payment_method_type: "card",
+            payment_details: {
+              cardholder_name: document.getElementById("cardholder-name-input").value.trim(),
+              card_number: document.getElementById("card-number-input").value.trim(),
+              expiry_month: document.getElementById("card-expiry-month-input").value.trim(),
+              expiry_year: document.getElementById("card-expiry-year-input").value.trim(),
+              cvv: document.getElementById("card-cvv-input").value.trim(),
+              billing_zip: document.getElementById("card-billing-zip-input").value.trim(),
+            },
+          };
+        }
+        return {
+          payment_method_type: "bank_account",
+          payment_details: {
+            account_holder_name: document.getElementById("bank-holder-name-input").value.trim(),
+            bank_name: document.getElementById("bank-name-input").value.trim(),
+            routing_number: document.getElementById("bank-routing-input").value.trim(),
+            account_number: document.getElementById("bank-account-input").value.trim(),
+            account_type: document.getElementById("bank-account-type-input").value,
+          },
+        };
+      }
+
+      function missingPurchaseFields(payment) {
+        if (payment.payment_method_type === "card") {
+          const fields = [
+            ["cardholder_name", "Cardholder name"],
+            ["card_number", "Card number"],
+            ["expiry_month", "Expiry month"],
+            ["expiry_year", "Expiry year"],
+            ["cvv", "CVV"],
+            ["billing_zip", "Billing ZIP"],
+          ];
+          return fields
+            .filter(([key]) => !payment.payment_details[key])
+            .map(([, label]) => label);
+        }
+        const fields = [
+          ["account_holder_name", "Account holder name"],
+          ["bank_name", "Bank name"],
+          ["routing_number", "Routing number"],
+          ["account_number", "Account number"],
+          ["account_type", "Account type"],
+        ];
+        return fields
+          .filter(([key]) => !payment.payment_details[key])
+          .map(([, label]) => label);
+      }
+
+      async function submitPurchase(event) {
+        event.preventDefault();
+        const wallet = state.ownerWallets[0];
+        const amountUsd = Number(document.getElementById("purchase-amount-input").value);
+        if (!wallet) {
+          showToast("No wallet found for this user.", "error");
+          return;
+        }
+        if (!amountUsd || amountUsd <= 0) {
+          showToast("Enter a valid USD amount.", "error");
+          return;
+        }
+        const payment = purchasePayload();
+        const missingFields = missingPurchaseFields(payment);
+        if (missingFields.length) {
+          showToast(`Complete required fields: ${missingFields.join(", ")}.`, "error");
+          return;
+        }
+        const confirmed = await showConfirmModal(
+          "Confirm purchase",
+          `Are you sure you want to buy ${amountUsd} EDU for ${amountUsd} USD using ${payment.payment_method_type === "card" ? "a credit card" : "a bank account"}?`
+        );
+        if (!confirmed) return;
+        try {
+          document.getElementById("purchase-button").disabled = true;
+          const result = await fetchJson("/purchases", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...authHeaders() },
+            body: JSON.stringify({
+              owner_user_id: state.currentUser.user_id,
+              wallet_address: wallet.address,
+              amount_usd: amountUsd,
+              ...payment,
+            }),
+          });
+          await refreshAuthenticatedViews();
+          const fundedAmount = result.purchase?.edu_amount || amountUsd;
+          showToast(`Funds added successfully: ${fundedAmount} EDU credited.`);
+        } catch (error) {
+          showToast(error.message || "Purchase failed.", "error");
+        } finally {
+          document.getElementById("purchase-button").disabled = false;
+        }
+      }
+
       async function handleAdminReview(submissionId, action, note) {
         const target = state.adminQueue.find((item) => item.submission_id === submissionId);
         if (!target) return;
@@ -1402,6 +1769,7 @@
           renderAdminDashboard();
         } else {
           await loadWallets();
+          await loadPurchases();
           const transactions = await loadTransactionHistory();
           renderUserDashboard(transactions);
         }
@@ -1417,6 +1785,9 @@
       document.getElementById("logout-button").addEventListener("click", signOut);
       document.getElementById("kyc-form").addEventListener("submit", submitKyc);
       document.getElementById("send-form").addEventListener("submit", submitTransaction);
+      document.getElementById("purchase-form").addEventListener("submit", submitPurchase);
+      document.getElementById("purchase-method-select").addEventListener("change", (event) => setPurchaseMethod(event.target.value));
+      document.getElementById("purchase-fake-data").addEventListener("click", fillFakePaymentData);
       document.getElementById("refresh-button").addEventListener("click", refreshAuthenticatedViews);
       document.getElementById("admin-refresh").addEventListener("click", refreshAuthenticatedViews);
       document.getElementById("users-refresh").addEventListener("click", refreshAuthenticatedViews);
@@ -1457,7 +1828,22 @@
         if (!button) return;
         state.userHistoryFilter = button.dataset.userHistory;
         syncTransactionFilterButtons();
-        refreshAuthenticatedViews();
+        renderDetailedTransactionHistory(filterTransactions(state.userTransactions), state.ownerWallets[0]?.balance || 0);
+      });
+      document.getElementById("transactions-toggle-all").addEventListener("click", () => {
+        const visibleTransactions = filterTransactions(state.userTransactions);
+        const shouldExpand = visibleTransactions.some((item) => !state.expandedTransactions[item.tx_id]);
+        visibleTransactions.forEach((item) => {
+          state.expandedTransactions[item.tx_id] = shouldExpand;
+        });
+        renderDetailedTransactionHistory(visibleTransactions, state.ownerWallets[0]?.balance || 0);
+      });
+      document.getElementById("transaction-history-full").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-tx-toggle]");
+        if (!button) return;
+        const txId = button.dataset.txToggle;
+        state.expandedTransactions[txId] = !state.expandedTransactions[txId];
+        renderDetailedTransactionHistory(filterTransactions(state.userTransactions), state.ownerWallets[0]?.balance || 0);
       });
       document.getElementById("close-user-drawer").addEventListener("click", closeUserDrawer);
       document.getElementById("drawer-backdrop").addEventListener("click", closeUserDrawer);
@@ -1475,6 +1861,7 @@
       document.getElementById("admin-activity-limit-custom").addEventListener("change", updateAdminActivityLimit);
 
       setAuthMode("signin");
+      setPurchaseMethod(currentPurchaseMethod());
       syncAdminActivityLimitControl();
       setLayoutForRole();
       loadCurrentUser().then((user) => {

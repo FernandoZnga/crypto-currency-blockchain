@@ -1,11 +1,13 @@
-import json
-import os
 import base64
 import hashlib
+import json
+import os
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlparse
 from urllib.error import HTTPError, URLError
+from http.client import RemoteDisconnected
 from urllib.request import Request, urlopen
 
 import psycopg
@@ -128,12 +130,41 @@ def fetch_chain():
         return []
 
 
+def submit_funding_transaction(purchase_id, wallet_address, amount_usd, edu_amount, payment_method_type):
+    payload = {
+        "type": "funding",
+        "purchase_id": purchase_id,
+        "recipient": wallet_address,
+        "amount": edu_amount,
+        "amount_usd": amount_usd,
+        "currency": "USD",
+        "payment_method_type": payment_method_type,
+        "source": "simulated_fiat_purchase",
+    }
+    payload["tx_id"] = stable_hash(payload)
+    request = Request(
+        f"{DEFAULT_NODE_URL}/transactions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urlopen(request, timeout=3) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
 def compute_balances(wallets):
     balances = {wallet["address"]: wallet["seed_balance"] for wallet in wallets}
     chain = fetch_chain()
     for block in chain[1:]:
         for tx in block.get("transactions", []):
-            if tx.get("type", "payment") != "payment":
+            tx_type = tx.get("type", "payment")
+            if tx_type == "funding":
+                recipient = tx.get("recipient")
+                amount = tx.get("amount", 0)
+                if recipient in balances:
+                    balances[recipient] += amount
+                continue
+            if tx_type != "payment":
                 continue
             sender = tx.get("sender")
             recipient = tx.get("recipient")
@@ -198,6 +229,69 @@ def payload_for_owner(connection, owner_user_id):
     }
 
 
+def purchases_for_owner(connection, owner_user_id):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT
+                purchase_id::text AS purchase_id,
+                owner_user_id::text AS owner_user_id,
+                wallet_address,
+                amount_usd,
+                edu_amount,
+                payment_method_type,
+                payment_payload,
+                status,
+                provider_reference,
+                blockchain_tx_id,
+                created_at::text AS created_at
+            FROM purchase_orders
+            WHERE owner_user_id = %s
+            ORDER BY created_at DESC
+            LIMIT 50
+            """,
+            (owner_user_id,),
+        )
+        return cursor.fetchall()
+
+
+def read_json_body(handler):
+    content_length = int(handler.headers.get("Content-Length", "0"))
+    raw = handler.rfile.read(content_length) if content_length else b"{}"
+    return json.loads(raw.decode("utf-8"))
+
+
+def normalized_payment_payload(payment_method_type, payment_details):
+    if payment_method_type == "card":
+        return {
+            "cardholder_name": str(payment_details.get("cardholder_name", "")).strip(),
+            "card_number": str(payment_details.get("card_number", "")).strip(),
+            "expiry_month": str(payment_details.get("expiry_month", "")).strip(),
+            "expiry_year": str(payment_details.get("expiry_year", "")).strip(),
+            "cvv": str(payment_details.get("cvv", "")).strip(),
+            "billing_zip": str(payment_details.get("billing_zip", "")).strip(),
+        }
+    if payment_method_type == "bank_account":
+        return {
+            "account_holder_name": str(payment_details.get("account_holder_name", "")).strip(),
+            "routing_number": str(payment_details.get("routing_number", "")).strip(),
+            "account_number": str(payment_details.get("account_number", "")).strip(),
+            "bank_name": str(payment_details.get("bank_name", "")).strip(),
+            "account_type": str(payment_details.get("account_type", "")).strip() or "checking",
+        }
+    return {}
+
+
+def payment_details_valid(payment_method_type, payment_payload):
+    if payment_method_type == "card":
+        required = ["cardholder_name", "card_number", "expiry_month", "expiry_year", "cvv", "billing_zip"]
+        return all(payment_payload.get(field) for field in required)
+    if payment_method_type == "bank_account":
+        required = ["account_holder_name", "routing_number", "account_number", "bank_name", "account_type"]
+        return all(payment_payload.get(field) for field in required)
+    return False
+
+
 class Handler(BaseHTTPRequestHandler):
     def _send(self, payload, status=200, content_type="application/json"):
         body = payload.encode("utf-8") if isinstance(payload, str) else json.dumps(payload).encode("utf-8")
@@ -232,6 +326,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(metrics_text(), content_type="text/plain; version=0.0.4")
             return
 
+        parsed = urlparse(self.path)
+
         with get_connection() as connection:
             if self.path == "/wallets/demo":
                 self._send(wallet_payload(connection))
@@ -257,26 +353,163 @@ class Handler(BaseHTTPRequestHandler):
                 )
                 return
 
-            if self.path.startswith("/wallets/by-owner"):
-                _, _, query = self.path.partition("?")
-                owner_user_id = ""
-                for part in query.split("&"):
-                    if part.startswith("owner_user_id="):
-                        owner_user_id = part.split("=", 1)[1]
-                        break
+            if parsed.path == "/wallets/by-owner":
+                owner_user_id = parse_qs(parsed.query).get("owner_user_id", [""])[0].strip()
                 if not owner_user_id:
                     self._send({"error": "owner_user_id is required"}, status=400)
                     return
                 self._send(payload_for_owner(connection, owner_user_id))
                 return
 
+            if parsed.path == "/purchases/by-owner":
+                owner_user_id = parse_qs(parsed.query).get("owner_user_id", [""])[0].strip()
+                if not owner_user_id:
+                    self._send({"error": "owner_user_id is required"}, status=400)
+                    return
+                self._send({"purchases": purchases_for_owner(connection, owner_user_id)})
+                return
+
         self._send({"error": "not found"}, status=404)
 
     def do_POST(self):
+        if self.path == "/purchases":
+            payload = read_json_body(self)
+            owner_user_id = payload.get("owner_user_id", "").strip()
+            wallet_address = payload.get("wallet_address", "").strip()
+            payment_method_type = payload.get("payment_method_type", "").strip()
+            payment_details = payload.get("payment_details", {})
+            try:
+                amount_usd = int(payload.get("amount_usd", 0))
+            except (TypeError, ValueError):
+                amount_usd = 0
+
+            if not owner_user_id or not wallet_address or amount_usd <= 0:
+                self._send({"error": "missing required fields"}, status=400)
+                return
+            if payment_method_type not in {"card", "bank_account"}:
+                self._send({"error": "invalid payment method type"}, status=400)
+                return
+
+            payment_payload = normalized_payment_payload(payment_method_type, payment_details)
+            if not payment_details_valid(payment_method_type, payment_payload):
+                self._send({"error": "missing payment details"}, status=400)
+                return
+
+            purchase_id = str(uuid.uuid4())
+            edu_amount = amount_usd
+            provider_reference = f"SIM-{purchase_id.split('-')[0].upper()}"
+
+            with get_connection() as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        """
+                        SELECT
+                            wallet_id::text AS wallet_id,
+                            owner_user_id::text AS owner_user_id,
+                            owner,
+                            address,
+                            type,
+                            seed_balance,
+                            public_key_pem,
+                            private_key_pem
+                        FROM wallets
+                        WHERE owner_user_id = %s AND address = %s
+                        """,
+                        (owner_user_id, wallet_address),
+                    )
+                    wallet = cursor.fetchone()
+                    if not wallet:
+                        self._send({"error": "wallet not found for owner"}, status=404)
+                        return
+
+                try:
+                    funding_result = submit_funding_transaction(
+                        purchase_id,
+                        wallet_address,
+                        amount_usd,
+                        edu_amount,
+                        payment_method_type,
+                    )
+                except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, RemoteDisconnected) as exc:
+                    increment_metric("transaction_sign_failure_total")
+                    self._send({"error": "purchase funding failed", "detail": str(exc)}, status=502)
+                    return
+
+                if not funding_result.get("accepted"):
+                    increment_metric("transaction_sign_failure_total")
+                    self._send({"error": "purchase funding rejected", "detail": funding_result}, status=409)
+                    return
+
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        """
+                        INSERT INTO purchase_orders (
+                            purchase_id,
+                            owner_user_id,
+                            wallet_address,
+                            amount_usd,
+                            edu_amount,
+                            payment_method_type,
+                            payment_payload,
+                            status,
+                            provider_reference,
+                            blockchain_tx_id,
+                            created_at
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s::jsonb, %s, %s, %s, %s)
+                        RETURNING
+                            purchase_id::text AS purchase_id,
+                            owner_user_id::text AS owner_user_id,
+                            wallet_address,
+                            amount_usd,
+                            edu_amount,
+                            payment_method_type,
+                            payment_payload,
+                            status,
+                            provider_reference,
+                            blockchain_tx_id,
+                            created_at::text AS created_at
+                        """,
+                        (
+                            purchase_id,
+                            owner_user_id,
+                            wallet_address,
+                            amount_usd,
+                            edu_amount,
+                            payment_method_type,
+                            json.dumps(payment_payload),
+                            "completed",
+                            provider_reference,
+                            funding_result.get("transaction", {}).get("tx_id"),
+                            now_iso(),
+                        ),
+                    )
+                    purchase = cursor.fetchone()
+                connection.commit()
+                emit_audit_event(
+                    {
+                        "event_name": "wallet.purchase.completed",
+                        "timestamp": now_iso(),
+                        "actor_id": owner_user_id,
+                        "actor_type": "user",
+                        "entity_type": "purchase",
+                        "entity_id": purchase_id,
+                        "source_ip": self.client_address[0],
+                        "service_name": SERVICE_NAME,
+                        "status": "success",
+                        "metadata": {
+                            "wallet_address": wallet_address,
+                            "amount_usd": amount_usd,
+                            "edu_amount": edu_amount,
+                            "payment_method_type": payment_method_type,
+                        },
+                    }
+                )
+                self._send({"purchase": purchase, "transaction": funding_result.get("transaction")}, status=201)
+            return
+
         if self.path == "/wallets":
-            content_length = int(self.headers.get("Content-Length", "0"))
-            raw = self.rfile.read(content_length) if content_length else b"{}"
-            payload = json.loads(raw.decode("utf-8"))
+            payload = read_json_body(self)
             owner_user_id = payload.get("owner_user_id", "").strip()
             owner = payload.get("owner", "").strip()
             wallet_address = payload.get("address", "").strip()
@@ -350,9 +583,7 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if self.path == "/transactions/sign":
-            content_length = int(self.headers.get("Content-Length", "0"))
-            raw = self.rfile.read(content_length) if content_length else b"{}"
-            payload = json.loads(raw.decode("utf-8"))
+            payload = read_json_body(self)
             owner_user_id = payload.get("owner_user_id", "").strip()
             sender = payload.get("sender", "").strip()
             recipient = payload.get("recipient", "").strip()
@@ -382,6 +613,15 @@ class Handler(BaseHTTPRequestHandler):
                         (owner_user_id, sender),
                     )
                     wallet = cursor.fetchone()
+                    cursor.execute(
+                        """
+                        SELECT 1
+                        FROM wallets
+                        WHERE address = %s
+                        """,
+                        (recipient,),
+                    )
+                    recipient_wallet = cursor.fetchone()
                 if not wallet:
                     increment_metric("transaction_sign_failure_total")
                     emit_audit_event(
@@ -399,6 +639,24 @@ class Handler(BaseHTTPRequestHandler):
                         }
                     )
                     self._send({"error": "wallet not found for owner"}, status=404)
+                    return
+                if not recipient_wallet:
+                    increment_metric("transaction_sign_failure_total")
+                    emit_audit_event(
+                        {
+                            "event_name": "wallet.transaction.sign_failed",
+                            "timestamp": now_iso(),
+                            "actor_id": owner_user_id or "unknown",
+                            "actor_type": "user",
+                            "entity_type": "transaction",
+                            "entity_id": "unknown",
+                            "source_ip": self.client_address[0],
+                            "service_name": SERVICE_NAME,
+                            "status": "failure",
+                            "metadata": {"recipient": recipient, "reason": "recipient_wallet_not_found"},
+                        }
+                    )
+                    self._send({"error": "recipient wallet not found"}, status=404)
                     return
                 signed_transaction = sign_transaction(wallet, recipient, amount, nonce)
                 increment_metric("transaction_sign_success_total")

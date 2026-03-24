@@ -2,6 +2,7 @@ import json
 import os
 import uuid
 from datetime import datetime, timezone
+from http.client import RemoteDisconnected
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, urlparse
@@ -138,23 +139,39 @@ def transaction_history_for(address):
     history = []
     for block in reversed(chain[1:]):
         for tx in block.get("transactions", []):
-            if tx.get("type", "payment") != "payment":
+            tx_type = tx.get("type", "payment")
+            if tx_type == "payment":
+                if tx.get("sender") != address and tx.get("recipient") != address:
+                    continue
+                direction = "outbound" if tx.get("sender") == address else "inbound"
+                history.append(
+                    {
+                        "tx_id": tx.get("tx_id"),
+                        "timestamp": tx.get("created_at") or block.get("timestamp"),
+                        "block_index": block.get("index"),
+                        "sender": tx.get("sender"),
+                        "recipient": tx.get("recipient"),
+                        "amount": tx.get("amount", 0),
+                        "direction": direction,
+                        "status": "confirmed",
+                        "type": tx_type,
+                    }
+                )
                 continue
-            if tx.get("sender") != address and tx.get("recipient") != address:
-                continue
-            direction = "outbound" if tx.get("sender") == address else "inbound"
-            history.append(
-                {
-                    "tx_id": tx.get("tx_id"),
-                    "timestamp": tx.get("created_at") or block.get("timestamp"),
-                    "block_index": block.get("index"),
-                    "sender": tx.get("sender"),
-                    "recipient": tx.get("recipient"),
-                    "amount": tx.get("amount", 0),
-                    "direction": direction,
-                    "status": "confirmed",
-                }
-            )
+            if tx_type == "funding" and tx.get("recipient") == address:
+                history.append(
+                    {
+                        "tx_id": tx.get("tx_id"),
+                        "timestamp": tx.get("created_at") or block.get("timestamp"),
+                        "block_index": block.get("index"),
+                        "sender": "fiat-onramp",
+                        "recipient": tx.get("recipient"),
+                        "amount": tx.get("amount", 0),
+                        "direction": "funding",
+                        "status": "confirmed",
+                        "type": tx_type,
+                    }
+                )
     return history[:20]
 
 
@@ -291,6 +308,31 @@ class Handler(BaseHTTPRequestHandler):
             except HTTPError as exc:
                 increment_metric("http_errors_total")
                 self._send({"error": "wallet lookup failed", "detail": exc.reason}, status=exc.code)
+            except (URLError, TimeoutError, json.JSONDecodeError) as exc:
+                increment_metric("http_errors_total")
+                self._send({"error": "wallet service unavailable", "detail": str(exc)}, status=502)
+            return
+
+        if parsed.path == "/purchases/by-owner":
+            token = self.headers.get("Authorization", "")
+            user = current_user_from_token(token)
+            if not user:
+                increment_metric("http_errors_total")
+                self._send({"error": "unauthorized"}, status=401)
+                return
+            owner_user_id = parse_qs(parsed.query).get("owner_user_id", [""])[0].strip()
+            if not owner_user_id:
+                self._send({"error": "owner_user_id is required"}, status=400)
+                return
+            if user.get("role") != "admin" and owner_user_id != user.get("user_id"):
+                increment_metric("http_errors_total")
+                self._send({"error": "owner mismatch"}, status=403)
+                return
+            try:
+                self._send(fetch_json(f"{WALLET_SERVICE_URL}{self.path}"))
+            except HTTPError as exc:
+                increment_metric("http_errors_total")
+                self._send({"error": "purchase lookup failed", "detail": exc.reason}, status=exc.code)
             except (URLError, TimeoutError, json.JSONDecodeError) as exc:
                 increment_metric("http_errors_total")
                 self._send({"error": "wallet service unavailable", "detail": str(exc)}, status=502)
@@ -578,10 +620,65 @@ class Handler(BaseHTTPRequestHandler):
                     },
                 )
                 result = send_json(f"{DEFAULT_NODE_URL}/transactions", signed.get("transaction"))
+                if not result.get("accepted"):
+                    increment_metric("http_errors_total")
+                    self._send(
+                        {
+                            "error": "transaction rejected",
+                            "detail": result.get("detail", "Transaction was not accepted by the blockchain node."),
+                        },
+                        status=409,
+                    )
+                    return
                 self._send(result, status=202)
             except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
                 increment_metric("http_errors_total")
                 self._send({"error": "transaction submission failed", "detail": str(exc)}, status=502)
+            return
+
+        if parsed.path == "/purchases":
+            payload = read_json_body(self)
+            token = self.headers.get("Authorization", "")
+            user = current_user_from_token(token)
+            if not user:
+                increment_metric("http_errors_total")
+                self._send({"error": "unauthorized"}, status=401)
+                return
+            if user.get("role") == "admin":
+                increment_metric("http_errors_total")
+                self._send({"error": "admins cannot buy funds"}, status=403)
+                return
+            if payload.get("owner_user_id") != user.get("user_id"):
+                increment_metric("http_errors_total")
+                self._send({"error": "owner mismatch"}, status=403)
+                return
+            if user.get("kyc_status") != "verified":
+                increment_metric("http_errors_total")
+                self._send(
+                    {
+                        "error": "kyc_required",
+                        "detail": "KYC must be approved before buying educational funds.",
+                        "kyc_status": user.get("kyc_status"),
+                    },
+                    status=403,
+                )
+                return
+            try:
+                result = send_json(f"{WALLET_SERVICE_URL}/purchases", payload)
+                self._send(result, status=201)
+            except HTTPError as exc:
+                increment_metric("http_errors_total")
+                self._send(
+                    error_payload_from_http_error(
+                        exc,
+                        "purchase failed",
+                        "Unable to complete the educational purchase right now.",
+                    ),
+                    status=exc.code,
+                )
+            except (URLError, TimeoutError, json.JSONDecodeError, RemoteDisconnected) as exc:
+                increment_metric("http_errors_total")
+                self._send({"error": "purchase flow unavailable", "detail": str(exc)}, status=502)
             return
 
         increment_metric("http_errors_total")

@@ -183,6 +183,12 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   align-items: center;
 }
 
+.form-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .text-link, .landing-footer a { color: var(--primary-strong); text-decoration: none; }
 
 .feature-icon, .step-number {
@@ -307,6 +313,72 @@ textarea { resize: vertical; }
 
 .history-item, .review-card { flex-direction: column; align-items: flex-start; }
 .review-head { display: flex; justify-content: space-between; width: 100%; gap: 12px; }
+
+.transaction-row {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+
+.transaction-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.transaction-summary {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.transaction-main,
+.transaction-title-row,
+.transaction-meta-row,
+.transaction-detail-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.transaction-title-row {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+}
+
+.transaction-meta-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.transaction-toggle-label {
+  color: var(--primary-strong);
+  font-size: 0.92rem;
+  padding-top: 2px;
+}
+
+.transaction-details {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.transaction-detail-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.transaction-detail-grid > div {
+  display: grid;
+  gap: 6px;
+}
 
 .table-shell {
   overflow: auto;
@@ -460,6 +532,12 @@ textarea { resize: vertical; }
     grid-template-columns: 1fr;
   }
 
+  .transaction-title-row,
+  .transaction-meta-row,
+  .transaction-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
   h1, .dashboard-title { max-width: none; }
   .education-notice, .app-header-actions, .section-head, .wallet-row, .node-list li, .activity-row, .review-head, .info-stack > div {
     flex-direction: column;
@@ -472,4 +550,5 @@ textarea { resize: vertical; }
   .app-shell { width: calc(100% - 16px); padding: 18px 0 28px; }
   .card { padding: 16px; border-radius: 18px; }
   .landing-footer { justify-content: flex-start; }
+  .transaction-summary { grid-template-columns: 1fr; }
 }
